@@ -1,0 +1,19 @@
+44781 - arcane barrage (r3)
+42897 - arcane blast (r4)
+42921 - arcane explosion (r10)
+42846 - arcane missiles (r13) (cast__?) 
+12042 - Arcane power
+1953  - Blink
+42987 - Replenish mana (mana gem)
+2139  - counterspell
+12051 - evocation
+66    - invisibility
+43024 - mage Armor (r6)
+43020 - mana Shield (r9)
+55342 - mirror image
+12826 - Polymorph (r4)
+12043 - Presence of mind
+475   - Remove Curse
+31589 - slow
+130   - slow Fall
+30449 - spellsteal

@@ -1,0 +1,34 @@
+49277 - Ancestral spirit (r7)
+55459 - chain Heal (r7)
+51886 - cleanse spirit
+8170  - cleansing totem
+526   - cure toxins
+49284 - earth Shield (r5)
+58757 - healing stream totem (r9)
+49273 - healing wave (r14)
+49276 - lesser healing wave (r9)
+58774 - mana spring totem (r8)
+16190 - mana tide totem
+16188 - nature's swiftness
+61301 - riptide (r4)
+55198 - tidal force
+36936 - totemic recall
+8143  - tremor totem
+57960 - water shield (r9)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

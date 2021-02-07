@@ -1,0 +1,30 @@
+2062  - Earth Elemental totem
+51533 - feral Spirit
+58739 - fire Resistance Totem (r6)
+58656 - flametongue Totem (r8)
+58745 - frost Resistance Totem (r6)
+2645  - ghost Wolf
+8177  - Grounding totem
+32182 - Heroism
+??    - Bloodlust
+60103 - lava Lash (r1)
+49281 - lightning Shield (r11)
+58749 - Nature Resistance Totem (r6)
+30823 - shamanistic Rage
+58753 - stoneskin totem (r10)
+17364 - stormstrike
+58643 - strenght of the earth totem
+8512  - windfury totem
+3738  - wrath of the air totem
+
+
+
+
+
+
+
+
+
+
+
+

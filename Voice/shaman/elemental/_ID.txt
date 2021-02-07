@@ -1,0 +1,27 @@
+66843 - call of the ancestors
+66842 - call Of The elements
+66844 - call Of The spirits
+49271 - chain lightning (r8) 
+49231 - earth Shock (r10)
+2484  - Earthbind totem
+16166 - elemental mastery
+2894  - fire elemental Totem
+61657 - fire Nova (r9)
+49233 - flame Shock (r9)
+49236 - frost Shock (r7)
+51514 - Hex
+60043 - lava Burst (r2)
+49238 - lightning Bolt (r14)
+58734 - magma totem (r7)
+8012  - Purge (r2)
+58704 - searing Totem (r10)
+58582 - stoneclaw Totem (r10)
+59159 - Thunderstorm (r4)
+57722 - totem of Wrath (r4)
+57994 - wind Shear
+
+
+
+
+
+

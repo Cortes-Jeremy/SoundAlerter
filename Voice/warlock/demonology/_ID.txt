@@ -1,0 +1,40 @@
+18647 - banish (r2)
+47878 - create Healstone (r8) + (47875: eating healstone)
+47889 - demon Armor (r8)
+48018 - demonic circle: summon
+48020 - demonic circle: teleport
+132   - detect invisibility
+61191 - enslave demon
+47893 - fel armor (r4)
+18708 - fel domination
+47856 - health funnel (r9)
+1122  - Inferno
+47891 - shadow ward (r6)
+691   - summon felhunter
+688   - summon Imp
+712   - summon succube
+697   - summon voidwalker
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

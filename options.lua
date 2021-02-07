@@ -36,6 +36,7 @@ end
 local function setOption(info, value)
 	local name = info[#info]
 	sadb[name] = value
+	--print(sadb.sapath..name..".mp3")
 	PlaySoundFile(sadb.sapath..name..".mp3");
 end
 local function getOption(info)
@@ -157,8 +158,8 @@ function SoundAlerter:OnOptionsCreate()
 								width = 'normal',
 								name = "Addon sounds only",
 								desc = "Sets other sounds to minimum, only hearing the addon sounds",
-								func = function() 
-										SetCVar ("Sound_AmbienceVolume",tostring ("0")); SetCVar ("Sound_SFXVolume",tostring ("0")); SetCVar ("Sound_MusicVolume",tostring ("0")); 
+								func = function()
+										SetCVar ("Sound_AmbienceVolume",tostring ("0")); SetCVar ("Sound_SFXVolume",tostring ("0")); SetCVar ("Sound_MusicVolume",tostring ("0"));
 										print("|cffFF7D0ASoundAlerter|r: Addons will only be heard by your Client. To undo this, click the 'reset sound options' button.");
 									end,
 								order = 2,
@@ -168,8 +169,8 @@ function SoundAlerter:OnOptionsCreate()
 								width = 'normal',
 								name = "Reset volume options",
 								desc = "Resets sound options",
-								func = function() 
-										SetCVar ("Sound_MasterVolume",tostring ("1")); SetCVar ("Sound_AmbienceVolume",tostring ("1")); SetCVar ("Sound_SFXVolume",tostring ("1")); SetCVar ("Sound_MusicVolume",tostring ("1")); 
+								func = function()
+										SetCVar ("Sound_MasterVolume",tostring ("1")); SetCVar ("Sound_AmbienceVolume",tostring ("1")); SetCVar ("Sound_SFXVolume",tostring ("1")); SetCVar ("Sound_MusicVolume",tostring ("1"));
 										print("|cffFF7D0ASoundAlerter|r: Sound options reset.");
 									end,
 								order = 3,
@@ -181,6 +182,12 @@ function SoundAlerter:OnOptionsCreate()
 								values = self.SA_LANGUAGE,
 								order = 3,
 							},
+							combatText = {
+								type = 'toggle',
+								name = "Combat Text Only",
+								desc = "Disable sounds and use combat text instead",
+								order = 4,
+							}
 						},
 					},
 					advance = {
@@ -271,6 +278,7 @@ function SoundAlerter:OnOptionsCreate()
 		desc = "Spell Options",
 		order = 2,
 		args = {
+			-- INLINE - checkbox to enable / disable spells alerter
 			spellGeneral = {
 				type = 'group',
 				name = "Spell Disables",
@@ -278,99 +286,276 @@ function SoundAlerter:OnOptionsCreate()
 				inline = true,
 				set = setOption,
 				get = getOption,
-				order = -1,
+				order = 0,
 				args = {
-					aruaApplied = {
-						type = 'toggle',
-						name = "Disable buff applied",
-						desc = "Disables sound notifications of buffs applied",
-						order = 1,
-					},
-					auraRemoved = {
-						type = 'toggle',
-						name = "Disable Buff down",
-						desc = "Disables sound notifications of buffs down",
-						order = 2,
-					},
-					castStart = {
-						type = 'toggle',
-						name = "Disable spell casting",
-						desc = "Disables spell casting notifications",
-						order = 3,
-					},
-					castSuccess = {
-						type = 'toggle',
-						name = "Disable enemy cooldown abilities",
-						desc = "Disbles sound notifications of cooldown abilities",
-						order = 4,
-					},
 					chatalerts = {
 						type = 'toggle',
 						name = "Disable Chat Alerts",
 						desc = "Disbles Chat notifications of special abilities in the chat bar",
-						order = 5,
+						order = 1,
 					},
 					interrupt = {
 						type = 'toggle',
 						name = "Disable Interrupted Spells",
 						desc = "Check this option to disable notifications of friendly interrupted spells",
+						order = 2,
+					},
+					auraApplied = {
+						type = 'toggle',
+						name = "Disable buff applied",
+						desc = "Disables sound notifications of buffs applied",
+						order = 3,
+					},
+					auraRemoved = {
+						type = 'toggle',
+						name = "Disable Buff down",
+						desc = "Disables sound notifications of buffs down",
+						order = 4,
+					},
+					castStart = {
+						type = 'toggle',
+						name = "Disable spell casting",
+						desc = "Disables spell casting notifications",
+						order = 5,
+					},
+					castSuccess = {
+						type = 'toggle',
+						name = "Disable enemy cooldown abilities",
+						desc = "Disbles sound notifications of cooldown abilities",
 						order = 6,
-					},
-					dArenaPartner = {
-						type = 'toggle',
-						name = "Disable Arena Partner debuff/CC alerts",
-						desc = "Check this option to disable notifications of Arena Partner debuff/CC alerts",
-						order = 7,
-					},
-					dSelfDebuff = {
-						type = 'toggle',
-						name = "Disable Self Debuff alerts",
-						desc = "Check this option to disable notifications of self debuff/CC alerts",
-						order = 8,
 					},
 					dEnemyDebuff = {
 						type = 'toggle',
 						name = "Disable Enemy Debuff alerts",
 						desc = "Check this option to disable notifications of enemy debuff/CC alerts",
-						order = 9,
+						order = 7,
 					},
 					dEnemyDebuffDown = {
 						type = 'toggle',
 						name = "Disable Enemy Debuff down alerts",
 						desc = "Check this option to disable notifications of enemy debuff/CC alerts",
+						order = 8,
+					},
+					dArenaPartner = {
+						type = 'toggle',
+						name = "Disable Arena Partner CC alerts",
+						desc = "Check this option to disable notifications of Arena Partner debuff/CC alerts",
 						order = 9,
+					},
+					dSelfDebuff = {
+						type = 'toggle',
+						name = "Disable Self Debuff alerts",
+						desc = "Check this option to disable notifications of self debuff/CC alerts",
+						order = 10,
 					},
 				},
 			},
+			-- INLINE - Buttons for fast navigation
+			inlineCategories = {
+				type = 'group',
+				name = "",
+				inline = true,
+				order = 1,
+				args = {
+					btnChatAlerter = {
+						type = 'execute',
+						name = "Chat Alerter",
+						order = 10,
+						width = "full",
+						disabled = function() return sadb.chatalerts end,
+						hidden = function() return sadb.chatalerts end,
+						func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "chatalerter") end,
+					},
+					btnAura = {
+						type = 'execute',
+						name = "Enemy Aura",
+						order = 11,
+						width = "full",
+						disabled = function() return sadb.auraApplied end,
+						hidden = function() return sadb.auraApplied end,
+						func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellauraApplied") end,
+					},
+					btnAuraDown = {
+						type = 'execute',
+						name = "Enemy Aura Down",
+						order = 12,
+						width = "full",
+						disabled = function() return sadb.auraRemoved end,
+						hidden = function() return sadb.auraRemoved end,
+						func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellAuraRemoved") end,
+					},
+					btnCastStart = {
+						type = 'execute',
+						name = "Enemy Casting Start",
+						order = 13,
+						width = "full",
+						disabled = function() return sadb.castStart end,
+						hidden = function() return sadb.castStart end,
+						func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastStart") end,
+					},
+					btnCastSucc = {
+						type = 'execute',
+						name = "Enemy Casting Success",
+						order = 14,
+						width = "full",
+						disabled = function() return sadb.castSuccess end,
+						hidden = function() return sadb.castSuccess end,
+						func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastSuccess") end,
+					},
+					btnEnemyDebuff = {
+						type = 'execute',
+						name = "Enemy Debuff",
+						order = 15,
+						width = "full",
+						disabled = function() return sadb.dEnemyDebuff end,
+						hidden = function() return sadb.dEnemyDebuff end,
+						func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "enemydebuff") end,
+					},
+					btnEnemyDebuffDown = {
+						type = 'execute',
+						name = "Enemy Debuff Down",
+						order = 16,
+						width = "full",
+						disabled = function() return sadb.dEnemyDebuffDown end,
+						hidden = function() return sadb.dEnemyDebuffDown end,
+						func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "enemydebuffdown") end,
+					},
+					btnFriendDebuff = {
+						type = 'execute',
+						name = "Friend Debuff",
+						order = 17,
+						width = "full",
+						disabled = function() return sadb.dArenaPartner end,
+						hidden = function() return sadb.dArenaPartner end,
+						func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "FriendDebuff") end,
+					},
+					btnFriendDebuffSuccess= {
+						type = 'execute',
+						name = "Friend Debuff Success",
+						order = 18,
+						width = "full",
+						disabled = function() return sadb.dArenaPartner end,
+						hidden = function() return sadb.dArenaPartner end,
+						func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "FriendDebuffSuccess") end,
+					},
+					btnselfDebuffs = {
+						type = 'execute',
+						name = "self Debuffs",
+						order = 19,
+						width = "full",
+						disabled = function() return sadb.dSelfDebuff end,
+						hidden = function() return sadb.dSelfDebuff end,
+						func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "selfDebuffs") end,
+					},
+				},
+			},
+			--
 			spellauraApplied = {
 				type = 'group',
-				--inline = true,
 				name = "Enemy Buffs",
 				desc = "Alerts you when your enemy gains a buff, or uses a cooldown",
 				set = setOption,
 				get = getOption,
-				disabled = function() return sadb.aruaApplied end,
+				disabled = function() return sadb.auraApplied end,
 				order = 2,
 				args = {
-					class = {
-						type = 'toggle',
-						name = "Alert Class calling for trinketting in Arena",
-						desc = "Alert when an enemy class trinkets in arena",
-						confirm = function() PlaySoundFile(sadb.sapath.."paladin.mp3"); self:ScheduleTimer("PlayTrinket", 0.4); end,
-						order = 2,
-					},
-					drinking = {
-						type = 'toggle',
-						name = "Alert Drinking in Arena",
-						desc = "Alert when an enemy drinks in arena",
-						order = 3,
-					},
-					general = {
+					inlineCategories = {
 						type = 'group',
 						inline = true,
-						name = "General spells",
-						order = 4,
+						name = "",
+						order = 0,
 						args = {
+							btnDK = {
+								type = 'execute',
+								name = "Death Knight",
+								order = 10,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellauraApplied", "dk") end,
+							},
+							btnDruid = {
+								type = 'execute',
+								name = "Druid",
+								order = 11,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellauraApplied", "druid") end,
+							},
+							btnHunt = {
+								type = 'execute',
+								name = "Hunter",
+								order = 12,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellauraApplied", "hunter") end,
+							},
+							btnMage = {
+								type = 'execute',
+								name = "Mage",
+								order = 13,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellauraApplied", "mage") end,
+							},
+							btnPaladin = {
+								type = 'execute',
+								name = "Paladin",
+								order = 14,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellauraApplied", "paladin") end,
+							},
+							btnPriest = {
+								type = 'execute',
+								name = "Priest",
+								order = 15,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellauraApplied", "priest") end,
+							},
+							btnRogue = {
+								type = 'execute',
+								name = "Rogue",
+								order = 16,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellauraApplied", "rogue") end,
+							},
+							btnShaman = {
+								type = 'execute',
+								name = "Shaman",
+								order = 17,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellauraApplied", "shaman") end,
+							},
+							btnWarlock = {
+								type = 'execute',
+								name = "Warlock",
+								order = 18,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellauraApplied", "warlock") end,
+							},
+							btnWarrior = {
+								type = 'execute',
+								name = "Warrior",
+								order = 19,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellauraApplied", "warrior") end,
+							},
+						},
+					},
+
+					general = {
+						type = 'group',
+						name = "General spells",
+						order = 1,
+						args = {
+							class = {
+								type = 'toggle',
+								name = "Alert Class calling for trinketting in Arena",
+								desc = "Alert when an enemy class trinkets in arena",
+								confirm = function() PlaySoundFile(sadb.sapath.."paladin.mp3"); self:ScheduleTimer("PlayTrinket", 0.4); end,
+								order = 1,
+							},
+							drinking = {
+								type = 'toggle',
+								name = "Alert Drinking in Arena",
+								desc = "Alert when an enemy drinks in arena",
+								order = 2,
+							},
 							trinket = {
 								type = 'toggle',
 								name = SpellTexture(42292).."PvP Trinket/Every Man for Himself",
@@ -378,92 +563,466 @@ function SoundAlerter:OnOptionsCreate()
 									GameTooltip:SetHyperlink(GetSpellLink(42292));
 								end,
 								descStyle = "custom",
-								order = 1,
+								order = 3,
+							},
+							objects	= {
+								type = 'group',
+								inline = true,
+								name= "Objects",
+								order = 5,
+								args = listOption({54861,54758},"auraApplied"),
 							},
 						}
 					},
-					druid = {
+					races = {
 						type = 'group',
-						inline = true,
-						name = "|cffFF7D0ADruid|r",
+						name = "|cffFFFFFFGeneral Races|r",
 						order = 4,
-						args = listOption({61336,29166,22812,17116,53312,22842,53201,50334,1850},"auraApplied"),	
+						args = listOption({58984,26297,20594,33702,7744,28880},"auraApplied"),
+					},
+
+					dk	= {
+						type = 'group',
+						name = "|cffC41F3BDeath Knight|r",
+						order = 10,
+						args = {
+							dkBlood	= {
+								type = 'group',
+								inline = true,
+								name= SpellTexture(48266).." |cffC41F3BBlood|r",
+								order = 5,
+								args = listOption({45529,49028,49016,55233},"auraApplied"),
+							},
+
+							spacerFrost = {
+								order = 6,
+								type = "description",
+								name = " "
+							},
+							dkFrost	= {
+								type = 'group',
+								inline = true,
+								name= SpellTexture(48263).."|cffC41F3B Frost |r",
+								order = 10,
+								args = listOption({57623,48792,49039,51271},"auraApplied"),
+							},
+
+							spacerUH = {
+								order = 11,
+								type = "description",
+								name = " "
+							},
+							dkUnholy = {
+								type = 'group',
+								inline = true,
+								name= SpellTexture(48265).."|cffC41F3B Unholy |r",
+								order = 15,
+								args = listOption({48707,51052,49222},"auraApplied"),
+							},
+
+						}
+					},
+					druid = {
+						order = 11,
+						type = 'group',
+						name = "|cffFF7D0ADruid|r",
+						args = {
+							druidBalance= {
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48463).." |cffFF7D0ABalance|r",
+								order = 1,
+								args = listOption({16870,22812,29166,53312,53201,53307},"auraApplied"),
+							},
+
+							spacerFeral = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							druidFeral = {
+								type = 'group',
+								inline = true,
+								name = SpellTexture(9634).." |cffFF7D0AFeral Combat|r",
+								order = 6,
+								args = listOption({50334,33357,5229,22842,52610,61336,69369},"auraApplied"),
+							},
+
+							spacerResto = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							druidResto = {
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48378).." |cffFF7D0ARestoration|r",
+								order = 11,
+								args = listOption({48470,48469,17116},"auraApplied"),
+							},
+						}
+					},
+					hunter = {
+						order = 12,
+						type = 'group',
+						name = "|cffABD473Hunter|r",
+						args = {
+							beastmastery = {
+								type = 'group',
+								inline = true,
+								name = SpellTexture(1515).." |cffABD473 Beast Mastery|r",
+								order = 1,
+								args = listOption({34027,54216,34471},"auraApplied"),
+							},
+
+							spacerMM = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							marksman = {
+								type = 'group',
+								inline = true,
+								name = SpellTexture(58434).." |cffABD473Marksmanship|r",
+								order = 6,
+								args = listOption({3045},"auraApplied"),
+							},
+
+							spacerSurvival = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							survival = {
+								type = 'group',
+								inline = true,
+								name = SpellTexture(53339).." |cffABD473Survival|r",
+								order = 11,
+								args = listOption({19263,35079},"auraApplied"),
+							},
+
+							spacerPet = {
+								order = 15,
+								type = "description",
+								name = " "
+							},
+							pet = {
+								type = 'group',
+								inline = true,
+								name = "|cffABD473Pet|r",
+								order = 16,
+								args = {
+									Gen = {
+										type = 'group',
+										inline = false,
+										name = "",
+										order = 1,
+										args = listOption({53480,53517,1742},"auraApplied"),
+									},
+									Crab = {
+										type = 'group',
+										inline = false,
+										name = "|cffABD473Crab|r",
+										order = 1,
+										args = listOption({53476,53479},"auraApplied"),
+									},
+									Ravager = {
+										type = 'group',
+										inline = false,
+										name = "|cffABD473Ravager|r",
+										order = 1,
+										args = listOption({61684},"auraApplied"),
+									},
+
+								},
+							},
+						},
+					},
+					mage = {
+						order = 13,
+						type = 'group',
+						name = "|cff69CCF0Mage|r",
+						args = {
+							arcane = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(42995).."|cff69CCF0 Arcane |r",
+								args = listOption({12042,66,43020,12043,130,44401},"auraApplied"),
+							},
+
+							spacerFire = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							fire = {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(42833).."|cff69CCF0 Fire |r",
+								args = listOption({28682,43010,31643,64343,48108},"auraApplied"),
+							},
+
+							spacerFrost = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							frost = {
+								order = 11,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(42842).."|cff69CCF0 Frost |r",
+								args = listOption({43012,43039,45438,12472,74396,57761},"auraApplied"),
+							},
+						},
 					},
 					paladin = {
+						order = 14,
 						type = 'group',
-						inline = true,
 						name = "|cffF58CBAPaladin|r",
-						order = 5,
-						args = listOption({31821,10278,1044,642,6940,498,64205,54428},"auraApplied")
+						args = {
+							holy = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name =  SpellTexture(48782).."|cffF58CBA Holy |r",
+								args = listOption({31821,53563,31842,54428,53601,54149},"auraApplied"),
+							},
+
+							spacerProt = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							protection = {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name =  SpellTexture(48942).."|cffF58CBA Protection |r",
+								args = listOption({498,64205,642,1044,10278,6940,1038,25780,20178},"auraApplied"),
+							},
+
+							spacerRet = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							retribution = {
+								order = 11,
+								type = 'group',
+								inline = true,
+								name =  SpellTexture(54043).."|cffF58CBA Retribution |r",
+								args = listOption({31884,59578,54203},"auraApplied"),
+							},
+						},
+					},
+					priest	= {
+						order = 15,
+						type = 'group',
+						name = "|cffFFFFFFPriest|r",
+						args = {
+							discipline = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48161).."|cffFFFFFF Discipline |r",
+								args = listOption({6346,48168,33206,10060,48066},"auraApplied"),
+							},
+
+							spacerHoly = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							holy = {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48782).."|cffFFFFFF Holy |r",
+								args = listOption({47788},"auraApplied"),
+							},
+
+							spacerShadow = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							shadow = {
+								order = 11,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48125).."|cffFFFFFF Shadow |r",
+								args = listOption({47585,586,15473},"auraApplied"),
+							},
+						}
 					},
 					rogue = {
 						type = 'group',
-						inline = true,
 						name = "|cffFFF569Rogue|r",
-						order = 6,
-						args = listOption({11305,14177,51713,31224,13750,26669},"auraApplied")
-					},
-					warrior	= {
-						type = 'group',
-						inline = true,
-						name = "|cffC79C6EWarrior|r",
-						order = 7,
-						args = listOption({1719,55694,871,12975,18499,20230,23920,12328,46924,12292},"auraApplied")
-					},
-					priest	= {
-						type = 'group',
-						inline = true,
-						name = "|cffFFFFFFPriest|r",
-						order = 8,
-						args = listOption({33206,10060,6346,47585,14751,47788},"auraApplied")
+						order = 16,
+						args = {
+							assassination = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48668).."|cffFFF569 Assassination |r",
+								args = listOption({14177},"auraApplied"),
+							},
+
+							spacerCombat = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							combat = {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48657).."|cffFFF569 Combat |r",
+								args = listOption({13750, 26669, 48659, 51690, 11305},"auraApplied"),
+							},
+
+							spacerSub = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							subtlety = {
+								order = 11,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(1784).."|cffFFF569 Subtlety |r",
+								args = listOption({31224,51713,57934,45182},"auraApplied"),
+							},
+						},
 					},
 					shaman	= {
 						type = 'group',
-						inline = true,
 						name = "|cff0070DEShaman|r",
-						order = 9,
-						args = listOption({30823,974,16188,57960,16166},"auraApplied"),
-					},
-					mage = {
-						type = 'group',
-						inline = true,
-						name = "|cff69CCF0Mage|r",
-						order = 10,
-						args = listOption({45438,12042,12472,12043,28682},"auraApplied"),
-					},
-					dk	= {
-						type = 'group',
-						inline = true,
-						name = "|cffC41F3BDeath Knight|r",
-						order = 11,
-						args = listOption({49039,48792,55233,48707,49222,49016},"auraApplied"),
-					},
-					hunter = {
-						type = 'group',
-						inline = true,
-						name = "|cffABD473Hunter|r",
-						order = 12,
-						args = listOption({34471,19263,53480},"auraApplied"),
-					},
-					races = {
-						type = 'group',
-						inline = true,
-						name = "|cffFFFFFFGeneral Races|r",
-						order = 14,
-						args = listOption({58984,26297,20594,33702,7744,28880},"auraApplied"),
+						order = 17,
+						args = {
+							elem = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(49238).."|cff0070DE Elemental Combat |r",
+								args = listOption({16166},"auraApplied"),
+							},
+
+							spacerEH = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							EH	= {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(49281).."|cff0070DE Enhancement |r",
+								args = listOption({2645,32182,30823,53817},"auraApplied"),
+							},
+
+							spacerResto = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							Resto = {
+								order = 11,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(49273).."|cff0070DE Restauration |r",
+								args = listOption({49284,57960,16188},"auraApplied"),
+							},
+						}
 					},
 					warlock	= {
 						type = 'group',
-						inline = true,
 						name = "|cff9482C9Warlock|r",
-						order = 13,
-						args = listOption({17941},"auraApplied"),
+						order = 18,
+						args = {
+							affliction = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(47860).." |cff9482C9Affliction|r",
+								args = listOption({17941},"auraApplied"),
+							},
+
+							spacerDemo = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							demonology = {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(5500).." |cff9482C9Demonology|r",
+								args = listOption({47891,18708},"auraApplied"),
+							},
+
+							spacerDestro = {
+								order = 15,
+								type = "description",
+								name = " "
+							},
+							destruction = {
+								order = 16,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(47820).." |cff9482C9Destruction|r",
+								args = listOption({54277},"auraApplied"),
+							},
+
 						},
-					}
-				},
+					},
+					warrior	= {
+						order = 19,
+						type = 'group',
+						name = "|cffC79C6EWarrior|r",
+						args = {
+							arms = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(2457).." |cffC79C6EArms|r",
+								args = listOption({46924,20230,12328,60503},"auraApplied"),
+							},
+
+							spacerFury = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							fury = {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(2458).." |cffC79C6EFury|r",
+								args = listOption({18499,12292,55694,1719,47436,47440},"auraApplied"),
+							},
+
+							spacerProt = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							protection = {
+								order = 11,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(71).." |cffC79C6EProtection|r",
+								args = listOption({12975,2565,871,23920,50227},"auraApplied"),
+							},
+						},
+					},
+				}
+			},
 			spellAuraRemoved = {
 				type = 'group',
-				--inline = true,
 				name = "Enemy Buff Down",
 				desc = "Alerts you when enemy buffs or used cooldowns are off the enemy",
 				set = setOption,
@@ -471,67 +1030,549 @@ function SoundAlerter:OnOptionsCreate()
 				disabled = function() return sadb.auraRemoved end,
 				order = 3,
 				args = {
-					warrior = {
+					inlineCategories = {
 						type = 'group',
 						inline = true,
-						name = "|cffC79C6EWarrior|r",
+						name = "",
+						order = 0,
+						args = {
+							btnDK = {
+								type = 'execute',
+								name = "Death Knight",
+								order = 10,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellAuraRemoved", "dk") end,
+							},
+							btnDruid = {
+								type = 'execute',
+								name = "Druid",
+								order = 11,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellAuraRemoved", "druid") end,
+							},
+							btnHunt = {
+								type = 'execute',
+								name = "Hunter",
+								order = 12,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellAuraRemoved", "hunter") end,
+							},
+							btnMage = {
+								type = 'execute',
+								name = "Mage",
+								order = 13,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellAuraRemoved", "mage") end,
+							},
+							btnPaladin = {
+								type = 'execute',
+								name = "Paladin",
+								order = 14,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellAuraRemoved", "paladin") end,
+							},
+							btnPriest = {
+								type = 'execute',
+								name = "Priest",
+								order = 15,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellAuraRemoved", "priest") end,
+							},
+							btnRogue = {
+								type = 'execute',
+								name = "Rogue",
+								order = 16,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellAuraRemoved", "rogue") end,
+							},
+							btnShaman = {
+								type = 'execute',
+								name = "Shaman",
+								order = 17,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellAuraRemoved", "shaman") end,
+							},
+							btnWarlock = {
+								type = 'execute',
+								name = "Warlock",
+								order = 18,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellAuraRemoved", "warlock") end,
+							},
+							btnWarrior = {
+								type = 'execute',
+								name = "Warrior",
+								order = 19,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellAuraRemoved", "warrior") end,
+							},
+						},
+					},
+
+					general = {
+						type = 'group',
+						name = "General spells",
+						order = 1,
+						args = {
+							objects	= {
+								type = 'group',
+								inline = true,
+								name= "Objects",
+								order = 5,
+								args = listOption({54861,54758},"auraRemoved"),
+							},
+						}
+					},
+					races = {
+						type = 'group',
+						name = "|cffFFFFFFGeneral Races|r",
 						order = 4,
-						args = listOption({1719,871,12292,46924},"auraRemoved"),
+						args = listOption({58984,26297,20594,33702,7744,28880},"auraRemoved"),
+					},
+
+					dk	= {
+						type = 'group',
+						name = "|cffC41F3BDeath Knight|r",
+						order = 10,
+						args = {
+							dkBlood	= {
+								type = 'group',
+								inline = true,
+								name= SpellTexture(48266).." |cffC41F3BBlood|r",
+								order = 5,
+								args = listOption({45529,49028,49016,55233},"auraRemoved"),
+							},
+
+							spacerFrost = {
+								order = 6,
+								type = "description",
+								name = " "
+							},
+							dkFrost	= {
+								type = 'group',
+								inline = true,
+								name= SpellTexture(48263).."|cffC41F3B Frost |r",
+								order = 10,
+								args = listOption({57623,48792,49039,51271},"auraRemoved"),
+							},
+
+							spacerUH = {
+								order = 11,
+								type = "description",
+								name = " "
+							},
+							dkUnholy = {
+								type = 'group',
+								inline = true,
+								name= SpellTexture(48265).."|cffC41F3B Unholy |r",
+								order = 15,
+								args = listOption({48707,51052,49222},"auraRemoved"),
+							},
+
+						}
+					},
+					druid = {
+						order = 11,
+						type = 'group',
+						name = "|cffFF7D0ADruid|r",
+						args = {
+							druidBalance= {
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48463).." |cffFF7D0ABalance|r",
+								order = 1,
+								args = listOption({16870,22812,29166,53312,53201,53307},"auraRemoved"),
+							},
+
+							spacerFeral = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							druidFeral = {
+								type = 'group',
+								inline = true,
+								name = SpellTexture(9634).." |cffFF7D0AFeral Combat|r",
+								order = 6,
+								args = listOption({50334,33357,5229,22842,52610,61336,69369},"auraRemoved"),
+							},
+
+							spacerResto = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							druidResto = {
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48378).." |cffFF7D0ARestoration|r",
+								order = 11,
+								args = listOption({48470,48469,17116},"auraRemoved"),
+							},
+						}
+					},
+					hunter = {
+						order = 12,
+						type = 'group',
+						name = "|cffABD473Hunter|r",
+						args = {
+							beastmastery = {
+								type = 'group',
+								inline = true,
+								name = SpellTexture(1515).." |cffABD473 Beast Mastery|r",
+								order = 1,
+								args = listOption({34027,54216,34471},"auraRemoved"),
+							},
+
+							spacerMM = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							marksman = {
+								type = 'group',
+								inline = true,
+								name = SpellTexture(58434).." |cffABD473Marksmanship|r",
+								order = 6,
+								args = listOption({3045},"auraRemoved"),
+							},
+
+							spacerSurvival = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							survival = {
+								type = 'group',
+								inline = true,
+								name = SpellTexture(53339).." |cffABD473Survival|r",
+								order = 11,
+								args = listOption({19263,35079},"auraRemoved"),
+							},
+
+							spacerPet = {
+								order = 15,
+								type = "description",
+								name = " "
+							},
+							pet = {
+								type = 'group',
+								inline = true,
+								name = "|cffABD473Pet|r",
+								order = 16,
+								args = {
+									Gen = {
+										type = 'group',
+										inline = false,
+										name = "",
+										order = 1,
+										args = listOption({53480,53517,1742},"auraRemoved"),
+									},
+									Crab = {
+										type = 'group',
+										inline = false,
+										name = "|cffABD473Crab|r",
+										order = 1,
+										args = listOption({53476,53479},"auraRemoved"),
+									},
+									Ravager = {
+										type = 'group',
+										inline = false,
+										name = "|cffABD473Ravager|r",
+										order = 1,
+										args = listOption({61684},"auraRemoved"),
+									},
+
+								},
+							},
+						},
+					},
+					mage = {
+						order = 13,
+						type = 'group',
+						name = "|cff69CCF0Mage|r",
+						args = {
+							arcane = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(42995).."|cff69CCF0 Arcane |r",
+								args = listOption({12042,66,43020,12043,130,44401},"auraRemoved"),
+							},
+
+							spacerFire = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							fire = {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(42833).."|cff69CCF0 Fire |r",
+								args = listOption({28682,43010,31643,64343,48108},"auraRemoved"),
+							},
+
+							spacerFrost = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							frost = {
+								order = 11,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(42842).."|cff69CCF0 Frost |r",
+								args = listOption({43012,43039,45438,12472,74396,57761},"auraRemoved"),
+							},
+						},
 					},
 					paladin = {
+						order = 14,
 						type = 'group',
-						inline = true,
 						name = "|cffF58CBAPaladin|r",
-						order = 5,
-						args = listOption({498,10278,642},"auraRemoved"),
+						args = {
+							holy = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name =  SpellTexture(48782).."|cffF58CBA Holy |r",
+								args = listOption({31821,53563,31842,54428,53601,54149},"auraRemoved"),
+							},
+
+							spacerProt = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							protection = {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name =  SpellTexture(48942).."|cffF58CBA Protection |r",
+								args = listOption({498,64205,642,1044,10278,6940,1038,25780,20178},"auraRemoved"),
+							},
+
+							spacerRet = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							retribution = {
+								order = 11,
+								type = 'group',
+								inline = true,
+								name =  SpellTexture(54043).."|cffF58CBA Retribution |r",
+								args = listOption({31884,59578,54203},"auraRemoved"),
+							},
+						},
+					},
+					priest	= {
+						order = 15,
+						type = 'group',
+						name = "|cffFFFFFFPriest|r",
+						args = {
+							discipline = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48161).."|cffFFFFFF Discipline |r",
+								args = listOption({6346,48168,33206,10060,48066},"auraRemoved"),
+							},
+
+							spacerHoly = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							holy = {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48782).."|cffFFFFFF Holy |r",
+								args = listOption({47788},"auraRemoved"),
+							},
+
+							spacerShadow = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							shadow = {
+								order = 11,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48125).."|cffFFFFFF Shadow |r",
+								args = listOption({47585,586,15473},"auraRemoved"),
+							},
+						}
 					},
 					rogue = {
 						type = 'group',
-						inline = true,
 						name = "|cffFFF569Rogue|r",
-						order = 6,
-						args = listOption({31224,26669},"auraRemoved"),
+						order = 16,
+						args = {
+							assassination = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48668).."|cffFFF569 Assassination |r",
+								args = listOption({14177},"auraRemoved"),
+							},
+
+							spacerCombat = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							combat = {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48657).."|cffFFF569 Combat |r",
+								args = listOption({13750, 26669, 48659, 51690, 11305},"auraRemoved"),
+							},
+
+							spacerSub = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							subtlety = {
+								order = 11,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(1784).."|cffFFF569 Subtlety |r",
+								args = listOption({31224,51713,57934,45182},"auraRemoved"),
+							},
+						},
 					},
-					priest	= {
+					shaman	= {
 						type = 'group',
-						inline = true,
-						name = "|cffFFFFFFPriest|r",
-						order = 7,
-						args = listOption({47585,33206},"auraRemoved"),
+						name = "|cff0070DEShaman|r",
+						order = 17,
+						args = {
+							elem = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(49238).."|cff0070DE Elemental Combat |r",
+								args = listOption({16166},"auraRemoved"),
+							},
+
+							spacerEH = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							EH	= {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(49281).."|cff0070DE Enhancement |r",
+								args = listOption({2645,32182,30823,53817},"auraRemoved"),
+							},
+
+							spacerResto = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							Resto = {
+								order = 11,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(49273).."|cff0070DE Restauration |r",
+								args = listOption({49284,57960,16188},"auraRemoved"),
+							},
+						}
 					},
-					mage = {
+					warlock	= {
 						type = 'group',
-						inline = true,
-						name = "|cff69CCF0Mage|r",
-						order = 9,
-						args = listOption({45438},"auraRemoved"),
+						name = "|cff9482C9Warlock|r",
+						order = 18,
+						args = {
+							affliction = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(47860).." |cff9482C9Affliction|r",
+								args = listOption({17941},"auraRemoved"),
+							},
+
+							spacerDemo = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							demonology = {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(5500).." |cff9482C9Demonology|r",
+								args = listOption({47891,18708},"auraRemoved"),
+							},
+
+							spacerDestro = {
+								order = 15,
+								type = "description",
+								name = " "
+							},
+							destruction = {
+								order = 16,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(47820).." |cff9482C9Destruction|r",
+								args = listOption({54277},"auraRemoved"),
+							},
+
+						},
 					},
-					dk = {
+					warrior	= {
+						order = 19,
 						type = 'group',
-						inline = true,
-						name = "|cffC41F3BDeath Knight|r",
-						order = 10,
-						args = listOption({48707,48792,49039},"auraRemoved"),
-					},
-					druid = {
-						type = 'group',
-						inline = true,
-						name = "|cffFF7D0ADruid|r",
-						order = 11,
-						args = listOption({53201},"auraRemoved"),
-					},
-					hunter = {
-						type = 'group',
-						inline = true,
-						name = "|cffABD473Hunter|r",
-						order = 12,
-						args = listOption({19263,34471},"auraRemoved"),
+						name = "|cffC79C6EWarrior|r",
+						args = {
+							arms = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(2457).." |cffC79C6EArms|r",
+								args = listOption({46924,20230,12328,60503},"auraRemoved"),
+							},
+
+							spacerFury = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							fury = {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(2458).." |cffC79C6EFury|r",
+								args = listOption({18499,12292,55694,1719},"auraRemoved"),
+							},
+
+							spacerProt = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							protection = {
+								order = 11,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(71).." |cffC79C6EProtection|r",
+								args = listOption({12975,2565,871,23920,47436,47440,50227},"auraRemoved"),
+							},
+						},
 					},
 				}
 			},
+			--
 			spellCastStart = {
 				type = 'group',
-				--inline = true,
 				name = "Enemy Spell Casting",
 				desc = "Alerts you when an enemy is attempting to cast a spell on you or another player",
 				disabled = function() return sadb.castStart end,
@@ -539,9 +1580,94 @@ function SoundAlerter:OnOptionsCreate()
 				get = getOption,
 				order = 4,
 				args = {
-					general = {
+					inlineCategories = {
 						type = 'group',
 						inline = true,
+						name = "",
+						order = 0,
+						args = {
+							btnGen = {
+								type = 'execute',
+								name = "General",
+								order = 9,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastStart", "general") end,
+							},
+							--[[btnDK = {
+								type = 'execute',
+								name = "Death Knight",
+								order = 10,
+								width = "full",
+								disabled = true,
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastStart", "dk") end,
+							},]]
+							btnDruid = {
+								type = 'execute',
+								name = "Druid",
+								order = 11,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastStart", "druid") end,
+							},
+							btnHunt = {
+								type = 'execute',
+								name = "Hunter",
+								order = 12,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastStart", "hunter") end,
+							},
+							btnMage = {
+								type = 'execute',
+								name = "Mage",
+								order = 13,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastStart", "mage") end,
+							},
+							btnPaladin = {
+								type = 'execute',
+								name = "Paladin",
+								order = 14,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastStart", "paladin") end,
+							},
+							btnPriest = {
+								type = 'execute',
+								name = "Priest",
+								order = 15,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastStart", "priest") end,
+							},
+							btnRogue = {
+								type = 'execute',
+								name = "Rogue",
+								order = 16,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastStart", "rogue") end,
+							},
+							btnShaman = {
+								type = 'execute',
+								name = "Shaman",
+								order = 17,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastStart", "shaman") end,
+							},
+							btnWarlock = {
+								type = 'execute',
+								name = "Warlock",
+								order = 18,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastStart", "warlock") end,
+							},
+							btnWarrior = {
+								type = 'execute',
+								name = "Warrior",
+								order = 19,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastStart", "warrior") end,
+							},
+						},
+					},
+					general = {
+						type = 'group',
 						name = "General Spells",
 						order = 2,
 						args = {
@@ -553,7 +1679,7 @@ function SoundAlerter:OnOptionsCreate()
 							},
 							resurrection = {
 								type = 'toggle',
-								name = SpellTexture(20609).."Resurrection spells", 
+								name = SpellTexture(20609).."Resurrection spells",
 								desc = "Ancestral Spirit, Redemption, etc",
 								order = 2,
 							},
@@ -561,59 +1687,370 @@ function SoundAlerter:OnOptionsCreate()
 					},
 					druid = {
 						type = 'group',
-						inline = true,
 						name = "|cffFF7D0ADruid|r",
-						order = 3,
-						args = listOption({2637,33786, 48465},"castStart"),
+						order = 2,
+						args = {
+							druidBalance= {
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48463).." |cffFF7D0ABalance|r",
+								order = 1,
+								args = listOption({18658,48467,33786,48465,53308,48461},"castStart"),
+							},
+
+							--[[spacerFeral = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							druidFeral = {
+								type = 'group',
+								inline = true,
+								name = SpellTexture(9634).." |cffFF7D0AFeral Combat|r",
+								order = 6,
+								args = listOption({},"castStart"),
+							},]]
+
+							spacerResto = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							druidResto = {
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48378).." |cffFF7D0ARestoration|r",
+								order = 11,
+								args = listOption({48443,48447},"castStart"),
+							},
+						}
 					},
-					paladin = {
-						type = 'group',
-						inline = true,
-						name = "|cffF58CBAPaladin|r",
-						order = 4,
-						args = listOption({10326},"castStart"),
-					},
-					priest	= {
-						type = 'group',
-						inline = true,
-						name = "|cffFFFFFFPriest|r",
-						order = 6,
-						args = listOption({8129,9484,64843,605},"castStart"),
-					},
-					shaman	= {
-						type = 'group',
-						inline = true,
-						name = "|cff0070DEShaman|r",
-						order = 7,
-						args = listOption({51514,60043},"castStart"),
-						},
 					hunter = {
 						type = 'group',
-						inline = true,
 						name = "|cffABD473Hunter|r",
-						order = 10,
-						args = listOption({982,14327},"castStart"),
-					},
-					warlock	= {
-						type = 'group',
-						inline = true,
-						name = "|cff9482C9Warlock|r",
-						order = 9,
-						args = listOption({6215,17928,710,712},"castStart"),
+						order = 3,
+						args = {
+							beastmastery = {
+								type = 'group',
+								inline = true,
+								name = SpellTexture(1515).." |cffABD473 Beast Mastery|r",
+								order = 1,
+								args = listOption({982, 14327},"castStart"),
+							},
+
+							spacerMM = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							marksman = {
+								type = 'group',
+								inline = true,
+								name = SpellTexture(58434).." |cffABD473Marksmanship|r",
+								order = 6,
+								args = listOption({49052},"castStart"),
+							},
+
+							--[[spacerSurvival = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							survival = {
+								type = 'group',
+								inline = true,
+								name = SpellTexture(53339).." |cffABD473Survival|r",
+								order = 11,
+								args = listOption({},"castStart"),
+							},]]
+						},
 					},
 					mage = {
 						type = 'group',
-						inline = true,
 						name = "|cff69CCF0Mage|r",
-						order = 8,
-						args = listOption({118},"castStart"),
+						order = 4,
+						args = {
+							arcane = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(42995).."|cff69CCF0 Arcane |r",
+								args = listOption({42897,28271,42846},"castStart"),
+							},
+
+							spacerFire = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							fire = {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(42833).."|cff69CCF0 Fire |r",
+								args = listOption({42833,42926,47610,42859},"castStart"),
+							},
+
+							spacerFrost = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							frost = {
+								order = 11,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(42842).."|cff69CCF0 Frost |r",
+								args = listOption({42842},"castStart"),
+							},
+						},
 					},
-				
+					paladin = {
+						type = 'group',
+						name = "|cffF58CBAPaladin|r",
+						order = 5,
+						args = {
+							holy = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name =  SpellTexture(48782).."|cffF58CBA Holy |r",
+								args = listOption({48801,48785,10326},"castStart"),
+							},
+
+							--[[spacerProt = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							protection = {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name =  SpellTexture(48942).."|cffF58CBA Protection |r",
+								args = listOption({},"castStart"),
+							},]]
+
+							--[[spacerRet = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							retribution = {
+								order = 11,
+								type = 'group',
+								inline = true,
+								name =  SpellTexture(54043).."|cffF58CBA Retribution |r",
+								args = listOption({},"castStart"),
+							},]]
+						},
+					},
+					priest	= {
+						type = 'group',
+						name = "|cffFFFFFFPriest|r",
+						order = 6,
+						args = {
+							discipline = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48161).."|cffFFFFFF Discipline |r",
+								args = listOption({8129,9484,10955,32375},"castStart"),
+							},
+
+							spacerHoly = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							holy = {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48782).."|cffFFFFFF Holy |r",
+								args = listOption({48120,48071,48135,48123},"castStart"),
+							},
+
+							spacerShadow = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							shadow = {
+								order = 11,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48125).."|cffFFFFFF Shadow |r",
+								args = listOption({48127,605,48160},"castStart"),
+							},
+						}
+					},
+					rogue = {
+						type = 'group',
+						name = "|cffFFF569Rogue|r",
+						order = 7,
+						args = {
+							subtlety = {
+								order = 11,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(1784).."|cffFFF569 Subtlety |r",
+								args = listOption({1842},"castStart"),
+							},
+						},
+					},
+					shaman	= {
+						type = 'group',
+						name = "|cff0070DEShaman|r",
+						order = 8,
+						args = {
+							elem = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(49238).."|cff0070DE Elemental Combat |r",
+								args = listOption({49271,51514,60043,49238},"castStart"),
+							},
+
+							--[[spacerEH = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							EH	= {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(49281).."|cff0070DE Enhancement |r",
+								args = listOption({51514},"castStart"),
+							},]]
+
+							spacerResto = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							Resto = {
+								order = 11,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(49273).."|cff0070DE Restauration |r",
+								args = listOption({49276},"castStart"),
+							},
+						}
+					},
+					warlock = {
+						type = 'group',
+						name = "|cff9482C9Warlock|r",
+						order = 9,
+						args = {
+							affliction = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(47860).." |cff9482C9Affliction|r",
+								args = listOption({6215,59164,17928,47836,47843},"castStart"),
+							},
+
+							spacerDemo = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							demonology = {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(5500).." |cff9482C9Demonology|r",
+								args = listOption({18647,47878,48018,61191,691,688,712,697,30146},"castStart"),
+							},
+
+							spacerDestro = {
+								order = 15,
+								type = "description",
+								name = " "
+							},
+							destruction = {
+								order = 16,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(47820).." |cff9482C9Destruction|r",
+								args = listOption({59172,47811,47838,47815,47825},"castStart"),
+							},
+
+							spacerPet = {
+								order = 20,
+								type = "description",
+								name = " "
+							},
+							pet = {
+								order = 21,
+								type = 'group',
+								inline = true,
+								name = "|cff9482C9Pet|r",
+								args = {
+									succube = {
+										type = 'group',
+										inline = false,
+										name = SpellTexture(712).."|cff9482C9 Succube |r",
+										order = 2,
+										args = listOption({6358},"castStart"),
+									},
+									--[[voidwalker = {
+										type = 'group',
+										inline = true,
+										name = SpellTexture(697).." Voidwalker",
+										order = 3,
+										args = listOption({ },"castSuccess"),
+									},]]
+								}
+							},
+						},
+					},
+					warrior	= {
+						type = 'group',
+						name = "|cffC79C6EWarrior|r",
+						order = 10,
+						args = {
+							arms = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(2457).." |cffC79C6EArms|r",
+								args = listOption({64382},"castStart"),
+							},
+
+							--[[spacerFury = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							fury = {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(2458).." |cffC79C6EFury|r",
+								args = listOption({},"castStart"),
+							},]]
+
+							--[[spacerProt = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							protection = {
+								order = 11,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(71).." |cffC79C6EProtection|r",
+								args = listOption({},"castStart"),
+							},]]
+						},
+					},
 				},
 			},
 			spellCastSuccess = {
 				type = 'group',
-				--inline = true,
 				name = "Enemy Cooldown Abilities",
 				desc = "Alerts you when enemies have used cooldowns",
 				disabled = function() return sadb.castSuccess end,
@@ -621,71 +2058,585 @@ function SoundAlerter:OnOptionsCreate()
 				get = getOption,
 				order = 5,
 				args = {
-					rogue = {
+					inlineCategories = {
 						type = 'group',
 						inline = true,
-						name = "|cffFFF569Rogue|r",
-						order = 4,
-						args = listOption({51722,51724,2094,1766,14185,26889,13877,1784},"castSuccess"),
-					},
-					warrior	= {
-						type = 'group',
-						inline = true,
-						name = "|cffC79C6EWarrior|r",
-						order = 5,
-						args = listOption({2457,2458,71,676,5246,6552,72},"castSuccess"),
-					},
-					priest	= {
-						type = 'group',
-						inline = true,
-						name = "|cffFFFFFFPriest|r",
-						order = 6,
-						args = listOption({10890,34433,64044,48173},"castSuccess"),
-					},
-					shaman	= {
-						type = 'group',
-						inline = true,
-						name = "|cff0070DEShaman|r",
-						order = 7,
-						args = listOption({8143,16190,2484,8177,32182,2825},"castSuccess"),
-					},
-					mage = {
-						type = 'group',
-						inline = true,
-						name = "|cff69CCF0Mage|r",
-						order = 8,
-						args = listOption({44445,12051,44572,11958,2139,66},"castSuccess"),
+						name = "",
+						order = 0,
+						args = {
+							btnDK = {
+								type = 'execute',
+								name = "Death Knight",
+								order = 10,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastSuccess", "dk") end,
+							},
+							btnDruid = {
+								type = 'execute',
+								name = "Druid",
+								order = 11,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastSuccess", "druid") end,
+							},
+							btnHunt = {
+								type = 'execute',
+								name = "Hunter",
+								order = 12,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastSuccess", "hunter") end,
+							},
+							btnMage = {
+								type = 'execute',
+								name = "Mage",
+								order = 13,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastSuccess", "mage") end,
+							},
+							btnPaladin = {
+								type = 'execute',
+								name = "Paladin",
+								order = 14,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastSuccess", "paladin") end,
+							},
+							btnPriest = {
+								type = 'execute',
+								name = "Priest",
+								order = 15,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastSuccess", "priest") end,
+							},
+							btnRogue = {
+								type = 'execute',
+								name = "Rogue",
+								order = 16,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastSuccess", "rogue") end,
+							},
+							btnShaman = {
+								type = 'execute',
+								name = "Shaman",
+								order = 17,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastSuccess", "shaman") end,
+							},
+							btnWarlock = {
+								type = 'execute',
+								name = "Warlock",
+								order = 18,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastSuccess", "warlock") end,
+							},
+							btnWarrior = {
+								type = 'execute',
+								name = "Warrior",
+								order = 19,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastSuccess", "warrior") end,
+							},
+						},
 					},
 					dk	= {
 						type = 'group',
-						inline = true,
 						name = "|cffC41F3BDeath Knight|r",
-						order = 9,
-						args = listOption({47528,47476,47568,49206,49203,61606},"castSuccess"),
+						order = 1,
+						args = {
+							dkBlood	= {
+								type = 'group',
+								inline = true,
+								name= SpellTexture(48266).." |cffC41F3BBlood|r",
+								order = 5,
+								args = listOption({49941,48266,49930,56222,48743,55262,49005,50842,48982,47476},"castSuccess"),
+							},
+
+							spacerFrost = {
+								order = 6,
+								type = "description",
+								name = " "
+							},
+							dkFrost	= {
+								type = 'group',
+								inline = true,
+								name= SpellTexture(48263).."|cffC41F3B Frost |r",
+								order = 10,
+								args = listOption({45524,49796,47568,48263,55268,49203,49909,47528,51425,56815},"castSuccess"),
+							},
+
+							spacerUH = {
+								order = 11,
+								type = "description",
+								name = " "
+							},
+							dkUnholy = {
+								type = 'group',
+								inline = true,
+								name= SpellTexture(48265).."|cffC41F3B Unholy |r",
+								order = 15,
+								args = listOption({51328,49938,49576,49924,49921,61999,46584,55271,49206,48265},"castSuccess"),
+							},
+
+							spacerPet = {
+								order = 16,
+								type = "description",
+								name = " "
+							},
+							dkpet = {
+								type = 'group',
+								inline = true,
+								name= SpellTexture(42650).." Pet",
+								order = 20,
+								args = listOption({47468,47481,47482,47484},"castSuccess"),
+							},
+						}
+					},
+					druid = {
+						type = 'group',
+						name = "|cffFF7D0ADruid|r",
+						order = 2,
+						args = {
+							druidBalance= {
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48463).." |cffFF7D0ABalance|r",
+								order = 1,
+								args = listOption({770,33831,48467,48468,48463,24858,61384},"castSuccess"),
+							},
+
+							spacerFeral = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							druidFeral = {
+								type = 'group',
+								inline = true,
+								name = SpellTexture(9634).." |cffFF7D0AFeral Combat|r",
+								order = 6,
+								args = listOption({8983,768,9634,48570,48560,16857,16979,49376,48577,48568,49802,33878,33876,48480,49803,5215,48574,48579,49800,48572,48562,62078,50213,5225,783},"castSuccess"),
+							},
+
+							spacerResto = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							druidResto = {
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48378).." |cffFF7D0ARestoration|r",
+								order = 11,
+								args = listOption({2893,48470,48469,48451,17116,48441,2782,18562,33891,53251},"castSuccess"),
+							},
+						}
 					},
 					hunter = {
 						type = 'group',
-						inline = true,
 						name = "|cffABD473Hunter|r",
-						order = 10,
-						args = listOption({53271,23989,19386,34490,49050,14311,13810},"castSuccess"),
+						order = 3,
+						args = {
+							beastmastery = {
+								type = 'group',
+								inline = true,
+								name = SpellTexture(1515).." |cffABD473 Beast Mastery|r",
+								order = 1,
+								args = listOption({13161,5118,61847,27044,13163,13159,34074,49071,6991,48990},"castSuccess"),
+							},
+
+							spacerMM = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							marksman = {
+								type = 'group',
+								inline = true,
+								name = SpellTexture(58434).." |cffABD473Marksmanship|r",
+								order = 6,
+								args = listOption({49050,49045,53209,5116,20736,1543,53338,61006,49048,23989,3043,49001,34490,19801,3034,58434},"castSuccess"),
+							},
+
+							spacerSurvival = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							survival = {
+								type = 'group',
+								inline = true,
+								name = SpellTexture(53339).." |cffABD473Survival|r",
+								order = 11,
+								args = listOption({781,49067,5384,60192,14311,13809,49056,53339,48996,19503,34600,19885,19883,49010},"castSuccess"),
+							},
+
+							spacerPet = {
+								order = 15,
+								type = "description",
+								name = " "
+							},
+							pet = {
+								type = 'group',
+								inline = true,
+								name = "|cffABD473Pet|r",
+								order = 16,
+								args = {
+									Crab = {
+										type = 'group',
+										inline = false,
+										name = "|cffABD473Crab|r",
+										order = 1,
+										args = listOption({61685,52472,53547},"castSuccess"),
+									},
+									Ravager = {
+										type = 'group',
+										inline = false,
+										name = "|cffABD473Ravager|r",
+										order = 2,
+										args = listOption({53561,53490,52473,61684},"castSuccess"),
+									},
+								},
+							},
+						},
 					},
-					warlock = {
+					mage = {
 						type = 'group',
-						inline = true,
-						name = "|cff9482C9Warlock|r",
-						order = 11,
-						args = listOption({5138,19647,48020,47860,6358},"castSuccess"),
+						name = "|cff69CCF0Mage|r",
+						order = 4,
+						args = {
+							arcane = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(42995).."|cff69CCF0 Arcane |r",
+								args = listOption({44781,42921,42846,1953,42987,2139,12051,66,55342,475,31589,30449},"castSuccess"),
+							},
+
+							spacerFire = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							fire = {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(42833).."|cff69CCF0 Fire |r",
+								args = listOption({42945, 42950,42873,55360},"castSuccess"),
+							},
+
+							spacerFrost = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							frost = {
+								order = 11,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(42842).."|cff69CCF0 Frost |r",
+								args = listOption({42940,11958, 42931,44572,42917,42914,31687},"castSuccess"),
+							},
+
+							spacerPet = {
+								order = 20,
+								type = "description",
+								name = " "
+							},
+							pet = {
+								order = 21,
+								type = 'group',
+								inline = true,
+								name = "|cff69CCF0Pet|r",
+								args = {
+									waterElem = {
+										type = 'group',
+										inline = false,
+										name = SpellTexture(31687).."|cff9482C9 Felhunter |r",
+										order = 1,
+										args = listOption({33395},"castSuccess"),
+									},
+								}
+							},
+
+						},
 					},
 					paladin = {
 						type = 'group',
-						inline = true,
 						name = "|cffF58CBAPaladin|r",
-						order = 11,
-						args = listOption({20066,10308,31884},"castSuccess"),
+						order = 5,
+						args = {
+							holy = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name =  SpellTexture(48782).."|cffF58CBA Holy |r",
+								args = listOption({4987,19746,48819,20216,48825,48817,48788,1152},"castSuccess"),
+							},
+
+							spacerProt = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							protection = {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name =  SpellTexture(48942).."|cffF58CBA Protection |r",
+								args = listOption({48827,48942,48947,48945,10308,53595,62124,20164,48943,61411},"castSuccess"),
+							},
+
+							spacerRet = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							retribution = {
+								order = 11,
+								type = 'group',
+								inline = true,
+								name =  SpellTexture(54043).."|cffF58CBA Retribution |r",
+								args = listOption({32223,35395,53385, 48806,53407,20271,53408,20066,54043},"castSuccess"),
+							},
+						},
+					},
+					priest	= {
+						type = 'group',
+						name = "|cffFFFFFFPriest|r",
+						order = 6,
+						args = {
+							discipline = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48161).."|cffFFFFFF Discipline |r",
+								args = listOption({988,53007},"castSuccess"),
+							},
+
+							spacerHoly = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							holy = {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48782).."|cffFFFFFF Holy |r",
+								args = listOption({552, 528,48173,48078,48119,48068,48113},"castSuccess"),
+							},
+
+							spacerShadow = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							shadow = {
+								order = 11,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48125).."|cffFFFFFF Shadow |r",
+								args = listOption({48300,48156,53023, 64044,10890,48158,48125,34433,15487},"castSuccess"),
+							},
+						}
+					},
+					rogue = {
+						type = 'group',
+						name = "|cffFFF569Rogue|r",
+						order = 7,
+						args = {
+							assassination = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48668).."|cffFFF569 Assassination |r",
+								args = listOption({48691, 1833,48674,51722,57993,48668,8647,48676,8643,48666,48672},"castSuccess"),
+							},
+
+							spacerCombat = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							combat = {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(48657).."|cffFFF569 Combat |r",
+								args = listOption({48657,51723, 1776,1766,5938,48638,13877},"castSuccess"),
+							},
+
+							spacerSub = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							subtlety = {
+								order = 11,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(1784).."|cffFFF569 Subtlety |r",
+								args = listOption({2094,1725,48660,14183,14185,51724,36554,1784,26889},"castSuccess"),
+							},
+						},
+					},
+					shaman	= {
+						type = 'group',
+						name = "|cff0070DEShaman|r",
+						order = 8,
+						args = {
+							elem = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(49238).."|cff0070DE Elemental Combat |r",
+								args = listOption({66843, 66842,66844,49231,2484,2894,61657,49233,49236,58734,8012,58704,58582,59159,57722,57994},"castSuccess"),
+							},
+
+							spacerEH = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							EH	= {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(49281).."|cff0070DE Enhancement |r",
+								args = listOption({2062,51533,58739,58656,58745,8177,60103,49281,58749,58753,17364,58643,8512,3738},"castSuccess"),
+							},
+
+							spacerResto = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							Resto = {
+								order = 11,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(49273).."|cff0070DE Restauration |r",
+								args = listOption({51886,8170,526,58757,58774,16190,16188,61301,55198,36936,8143},"castSuccess"),
+							},
+						}
+					},
+					warlock = {
+						type = 'group',
+						name = "|cff9482C9Warlock|r",
+						order = 9,
+						args = {
+							affliction = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(47860).." |cff9482C9Affliction|r",
+								args = listOption({47813,47864,47867,18223,47865,11719,50511,47860,47857,5138,47855,17928,57946},"castSuccess"),
+							},
+
+							spacerDemo = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							demonology = {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(5500).." |cff9482C9Demonology|r",
+								args = listOption({47875,48020,132,47856,1122},"castSuccess"),
+							},
+
+							spacerDestro = {
+								order = 15,
+								type = "description",
+								name = " "
+							},
+							destruction = {
+								order = 16,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(47820).." |cff9482C9Destruction|r",
+								args = listOption({17962,47823,47820,47827,61290,47847},"castSuccess"),
+							},
+
+							spacerPet = {
+								order = 20,
+								type = "description",
+								name = " "
+							},
+							pet = {
+								order = 21,
+								type = 'group',
+								inline = true,
+								name = "|cff9482C9Pet|r",
+								args = {
+									felhunter = {
+										type = 'group',
+										inline = false,
+										name = SpellTexture(691).."|cff9482C9 Felhunter |r",
+										order = 1,
+										args = listOption({19647,48011},"castSuccess"),
+									},
+									succube = {
+										type = 'group',
+										inline = false,
+										name = SpellTexture(712).."|cff9482C9 Succube |r",
+										order = 2,
+										args = listOption({7870},"castSuccess"),
+									},
+									--[[voidwalker = {
+										type = 'group',
+										inline = true,
+										name = SpellTexture(697).." Voidwalker",
+										order = 3,
+										args = listOption({ },"castSuccess"),
+									},]]
+								}
+							},
+						},
+					},
+					warrior	= {
+						type = 'group',
+						name = "|cffC79C6EWarrior|r",
+						order = 10,
+						args = {
+							arms = {
+								order = 1,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(2457).." |cffC79C6EArms|r",
+								args = listOption({2457,11578,1715,47450,57755,694,47486,7384,47465,47502},"castSuccess"),
+							},
+
+							spacerFury = {
+								order = 5,
+								type = "description",
+								name = " "
+							},
+							fury = {
+								order = 6,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(2458).." |cffC79C6EFury|r",
+								args = listOption({2458,23881,1161,47520,47437,47471,60970,20252,5246,12323,6552,47475,34428,1680},"castSuccess"),
+							},
+
+							spacerProt = {
+								order = 10,
+								type = "description",
+								name = " "
+							},
+							protection = {
+								order = 11,
+								type = 'group',
+								inline = true,
+								name = SpellTexture(71).." |cffC79C6EProtection|r",
+								args = listOption({71,2687,12809,47498,676,3411,57823,72,47488,46968,7386,355},"castSuccess"),
+							},
+						},
 					},
 				},
 			},
+			--
 			enemydebuff = {
 				type = 'group',
 				--inline = true,
@@ -717,7 +2668,7 @@ function SoundAlerter:OnOptionsCreate()
 				--inline = true,
 				name = "Enemy Debuff Down",
 				desc = "Alerts you when your (or your arena partner) casted CC's on an enemy is down",
-				disabled = function() return sadb.eEnemyDebuffDown end,
+				disabled = function() return sadb.dEnemyDebuffDown end,
 				set = setOption,
 				get = getOption,
 				order = 7,
@@ -739,6 +2690,7 @@ function SoundAlerter:OnOptionsCreate()
 					}
 				},
 			},
+			--
 			chatalerter = {
 				type = 'group',
 				name = "Chat Alerts",
@@ -937,18 +2889,18 @@ function SoundAlerter:OnOptionsCreate()
 							},
 						},
 					},
-				trinketalerttextg = {
+					trinketalerttextg = {
 						type = "group",
 						inline = true,
 						hidden = function() if sadb.trinketalert then return false else return true end end,
 						name = "PvP trinket text",
-						order = 14,	
+						order = 14,
 						args = {
 							trinketalerttext = {
-							type = 'input',
-							name = "Example: '#enemy# casted #spell#!' = Enemyname casted [PvP Trinket]!",
-							order = 1,
-							width = "full",
+								type = 'input',
+								name = "Example: '#enemy# casted #spell#!' = Enemyname casted [PvP Trinket]!",
+								order = 1,
+								width = "full",
 							},
 						},
 					},
@@ -960,50 +2912,51 @@ function SoundAlerter:OnOptionsCreate()
 						order = 15,
 						args = {
 							stealthTF = {
-							type = 'toggle',
-							name = "Ignore target/focus",
-							order = 2,
+								type = 'toggle',
+								name = "Ignore target/focus",
+								order = 2,
 							},
 						},
 					},
-				vanishalerttextg = {
+					vanishalerttextg = {
 						type = "group",
 						inline = true,
 						hidden = function() if sadb.vanishenemy then return false else return true end end,
 						name = SpellTextureName(26889),
-						order = 16,	
+						order = 16,
 						args = {
 							vanishTF = {
-							type = 'toggle',
-							name = "Ignore target/focus",
-							order = 2,
+								type = 'toggle',
+								name = "Ignore target/focus",
+								order = 2,
 							},
 						},
 					},
-			InterruptTextg = {
+					InterruptTextg = {
 						type = "group",
 						inline = true,
 						name = "Interrupt Text",
 						order = 17,
 						args = {
 							InterruptEnemyText = {
-							name = "Interrupt on Enemy (eg. 'Interrupted #enemy# with #spell#')",
-							hidden = function() if sadb.interruptenemy then return false else return true end end,
-							type = "input",
-							order = 1,
-							width = "full",
+								name = "Interrupt on Enemy (eg. 'Interrupted #enemy# with #spell#')",
+								hidden = function() if sadb.interruptenemy then return false else return true end end,
+								type = "input",
+								order = 1,
+								width = "full",
 							},
 							InterruptSelfText = {
-							name = "Interrupts from Enemy (eg. '#enemy# interrupted me with #spell#')",
-							hidden = function() if sadb.interruptself then return false else return true end end,
-							type = "input",
-							order = 1,
-							width = "full",
+								name = "Interrupts from Enemy (eg. '#enemy# interrupted me with #spell#')",
+								hidden = function() if sadb.interruptself then return false else return true end end,
+								type = "input",
+								order = 1,
+								width = "full",
 							},
 						},
 					},
 				},
-			},--end chat alert menu
+			},
+			--
 			FriendDebuff = {
 				type = 'group',
 				--inline = true,
@@ -1016,15 +2969,16 @@ function SoundAlerter:OnOptionsCreate()
 				args = listOption({51514,118,33786,6215},"friendCCs"),
 			},
 			FriendDebuffSuccess = {
-			type = 'group',
-			name = "Arena partner CCs/Debuffs",
-			desc = "Alerts you when your arena partner gets CC'd",
-			disabled = function() return sadb.dArenaPartner end,
-			set = setOption,
-			get = getOption,
-			order = 9,
-			args = listOption({14309,2094,10308,51514,12826,33786,6215,2139,51724},"friendCCSuccess"),
+				type = 'group',
+				name = "Arena partner CCs/Debuffs",
+				desc = "Alerts you when your arena partner gets CC'd",
+				disabled = function() return sadb.dArenaPartner end,
+				set = setOption,
+				get = getOption,
+				order = 9,
+				args = listOption({14309,2094,10308,51514,12826,33786,6215,2139,51724},"friendCCSuccess"),
 			},
+			--
 			selfDebuffs = {
 				type = 'group',
 				--inline = true,
@@ -1047,7 +3001,7 @@ function SoundAlerter:OnOptionsCreate()
 			newalert = {
 				type = 'execute',
 				name = function ()
-							if sadb.custom[L["New Alert"]] then  
+							if sadb.custom[L["New Alert"]] then
 								return L["Rename the New Alert entry"]
 							else
 								return L["New Alert"]
@@ -1138,7 +3092,7 @@ function SoundAlerter:OnOptionsCreate()
 					name = L["Remove"],
 					confirm = true,
 					confirmText = L["Are you sure?"],
-					func = function() 
+					func = function()
 						sadb.custom[key] = nil
 						self.options.args.custom.args[keytemp] = nil
 					end,

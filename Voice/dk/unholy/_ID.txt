@@ -1,0 +1,16 @@
+48707 - AMS
+51052 - AMZ
+42650 - Army of the dead
+49222 - bone shield
+51328 - corpse explosion (r5)
+49938 - Death and decay (r4)
+49895 - Death coil (dk, r5)
+49576 - death grip
+49924 - death strike (r5)
+49921 - plague strike (r6)
+61999 - raise ally
+46584 - raise dead
+55271 - scourge strike (r4)
+49206 - summon gargoyle
+48265 - unholy presence
+

@@ -1,0 +1,31 @@
+8983  - bash (r3)
+50334 - Berserk
+768   - cat Form
+9634  - bear Form 
+48570 - claw (r8)
+33357 - dash (r3)
+48560 - demoralizing shout (r8)
+5229  - enrage
+16857 - faery fire (feral)
+16979 - feral charge - Bear
+49376 - feral charge - cat
+48577 - ferocious bite (r8)
+22842 - frenzied regeneration
+48568 - lacerate (r3)
+49802 - maim (r2)
+33878 - mangle (bear, r1)
+33876 - mangle (cat, r1)
+48480 - maul (r10)
+49803 - pounce (r5)
+5215  - Prowl
+48574 - rake (r7)
+48579 - ravage (r7)
+49800 - Rip (r9)
+52610 - savage roar (r1)
+48572 - shred (r9)
+61336 - survival instinct
+48562 - swipe (bear, r8)
+62078 - swipe (cat, r1)
+50213 - tiger's fury (r6) (Cast_succes)
+5225  - track humanoids
+783   - travel Form

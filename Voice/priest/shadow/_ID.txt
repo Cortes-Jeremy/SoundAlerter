@@ -1,0 +1,15 @@
+48300 - devouring Plague (r9)
+47585 - dispersion
+586   - fade
+48127 - mind Blast (r13)
+605   - mind Control
+48156 - mind Flay (r9)
+53023 - mind Sear (r2)
+64044 - psychic Horror
+10890 - psychic Scream (r4)
+48158 - shadow Word: Death (r4)
+48125 - shadow Word: Pain (r12)
+34433 - shadowfiend
+15473 - shadowForm
+15487 - silence
+48160 - vampiric touch (r5)

@@ -1,0 +1,16 @@
+42940 - blizzard (r9)
+11958 - cold snap
+42931 - cone of cold (r8)
+44572 - deep freeze
+7301  - Frost Armor (r3)
+42917 - frost nova (r6)
+43012 - frost ward (r7)
+116   - frost bolt (r1)
+42842 - frost bolt (r16)
+43008 - ice armor (r6)
+43039 - ice Barrier (r8)
+45438 - ice block
+42914 - ice lance (r3)
+12472 - icy veins
+31687 - summon water elemental
+33395 - pet Freeze
