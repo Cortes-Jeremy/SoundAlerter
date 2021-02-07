@@ -1551,7 +1551,7 @@ function SoundAlerter:OnOptionsCreate()
 								type = 'group',
 								inline = true,
 								name = SpellTexture(2458).." |cffC79C6EFury|r",
-								args = listOption({18499,12292,55694,1719},"auraRemoved"),
+								args = listOption({18499,12292,55694,1719,47436,47440},"auraRemoved"),
 							},
 
 							spacerProt = {
@@ -1564,7 +1564,7 @@ function SoundAlerter:OnOptionsCreate()
 								type = 'group',
 								inline = true,
 								name = SpellTexture(71).." |cffC79C6EProtection|r",
-								args = listOption({12975,2565,871,23920,47436,47440,50227},"auraRemoved"),
+								args = listOption({12975,2565,871,23920,50227},"auraRemoved"),
 							},
 						},
 					},

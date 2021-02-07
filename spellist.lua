@@ -99,8 +99,6 @@ function SoundAlerter:GetSpellList ()
 			--
 
 			--Druid
-				--Proc
-				[16870] = druidP.FL.."_proc\\".."clearcasting",
 				--Balance
 				[22812] = druidP.BL.."barkskin",
 				[29166] = druidP.BL.."innervate",
@@ -115,6 +113,7 @@ function SoundAlerter:GetSpellList ()
 					--Proc
 					[48518] = druidP.BL.."_proc\\".."lunarEclipse", --New
 					[48517] = druidP.BL.."_proc\\".."solarEclipse", --New
+					[16870] = druidP.BL.."_proc\\".."clearcasting",
 				--Feral
 				[50334] = druidP.FL.."berserk",
 				[1850] = druidP.FL.."dash",	--rank 1
@@ -340,8 +339,6 @@ function SoundAlerter:GetSpellList ()
 			--
 
 			--Druid
-				--Proc
-				[16870] = druidP.FL.."_proc\\".."clearcastingDown",
 				--Balance
 				[22812] = druidP.BL.."barkskinDown",
 				[29166] = druidP.BL.."innervateDown",
@@ -356,6 +353,7 @@ function SoundAlerter:GetSpellList ()
 					--Proc
 					[48518] = druidP.BL.."_proc\\".."lunarEclipseFown", --New
 					[48517] = druidP.BL.."_proc\\".."solarEclipseDown", --New
+					[16870] = druidP.BL.."_proc\\".."clearcastingDown",
 				--Feral
 				[50334] = druidP.FL.."berserkDown",
 				[1850] = druidP.FL.."dashDown",	--rank 1
@@ -456,7 +454,7 @@ function SoundAlerter:GetSpellList ()
 				[48168] = priestP.DP.."innerFireDown", --New
 				[33206] = priestP.DP.."painSuppressionDown",
 				[10060] = priestP.DP.."powerInfusionDown",
-				[48066] = priestP.DP.."powerWorldShieldDown", --New
+				[48066] = priestP.DP.."powerWordShieldDown", --New
 				--Holy
 				[47788] = priestP.HY.."guardianSpiritDown",
 				--Shadow
@@ -481,7 +479,7 @@ function SoundAlerter:GetSpellList ()
 				[31224] = rogP.SB.."cloakOfShadowsDown",
 				[51713] = rogP.SB.."shadowDanceDown",
 				[57934] = rogP.SB.."trickOfTheTradeDown", --New (A revoir)
-				[45182] = rogP.SB.."cheatDeathDown",   -- New
+				[45182] = rogP.SB.."cheatingDeathDown",   -- New
 			--
 
 			--Shaman
@@ -509,8 +507,7 @@ function SoundAlerter:GetSpellList ()
 				[24398] = shamP.RT.."waterShieldDown",	--Water Shield rank 7
 				[33736] = shamP.RT.."waterShieldDown",	--Water Shield rank 8
 				[57960] = shamP.RT.."waterShieldDown",	--Water Shield rank 9
-					--Proc
-					[16188] = shamP.RT.."_proc\\".."naturesSwiftness2Down",
+				[16188] = shamP.RT.."naturesSwiftnessDown",
 			--
 
 			--Warlock
@@ -537,13 +534,13 @@ function SoundAlerter:GetSpellList ()
 				[12292] = warP.FY.."deathWishDown", --New (manque le son du down)
 				[55694] = warP.FY.."enragedRegenerationDown",
 				[1719] = warP.FY.."recklessnessDown",
+				[47440] = warP.FY.."commandingShoutDown", -- NEW
+				[47436] = warP.FY.."battleShoutDown",	 -- NEW
 				--Protection
 				[12975] = warP.PT.."lastStandDown",
 				[2565] = warP.PT.."shieldBlockDown", --New
 				[871] = warP.PT.."shieldWallDown",
 				[23920] = warP.PT.."spellReflectionDown",
-				[47436] = warP.PT.."battleShoutDown",	 -- NEW
-				[47440] = warP.PT.."commandingShoutDown", -- NEW
 					--Proc
 					[50227] = warP.PT.."_proc\\".."swordAndBoardDown", --New
 			--
