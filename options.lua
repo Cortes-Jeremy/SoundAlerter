@@ -547,7 +547,7 @@ function SoundAlerter:OnOptionsCreate()
 								type = 'toggle',
 								name = "Alert Class calling for trinketting in Arena",
 								desc = "Alert when an enemy class trinkets in arena",
-								confirm = function() PlaySoundFile(sadb.sapath.."paladin.mp3"); self:ScheduleTimer("PlayTrinket", 0.4); end,
+								confirm = function() PlaySoundFile(sadb.sapath.."_trinkets\\".."paladin.mp3"); end,
 								order = 1,
 							},
 							drinking = {

@@ -5,7 +5,7 @@
 local objP = {
 	base = "_objects\\",
 	ingi = "_objects\\ingineering\\",
-	FA = "_objects\\firstAid\\"
+	FA = "_objects\\firstAid\\",
 }
 local raceP = "_racial\\"
 
@@ -312,8 +312,8 @@ function SoundAlerter:GetSpellList ()
 		auraRemoved = {
 
 			--Objects
-			[54861] = objP.."nitroBoostDown",
-			[54758] = objP.."hyperspeedAcceleratorDown",
+			[54861] = objP.ingi.."nitroBoostDown",
+			[54758] = objP.ingi.."hyperspeedAcceleratorDown",
 
 			--Races
 			[58984] = raceP.."shadowmeldDown",
