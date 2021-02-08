@@ -2,7 +2,11 @@
 				Credits to Abatorlos of Spinebreaker, Duskashes, Superk
 								Notes: Check spell IDs by rank first
 								add death wish down, starfire, bladestorm down]]
-local objP = "_objects\\"
+local objP = {
+	base = "_objects\\",
+	ingi = "_objects\\ingineering\\"
+	FA = "_objects\\firstAid\\"
+}
 local raceP = "_racial\\"
 
 local dkP = {
@@ -69,8 +73,8 @@ function SoundAlerter:GetSpellList ()
 
 		auraApplied = {					-- aura applied [spellid] = ".mp3 file name",
 			--Objects
-			[54861] = objP.."nitroBoost",
-			[54758] = objP.."hyperspeedAccelerator",
+			[54861] = objP.ingi.."nitroBoost",
+			[54758] = objP.ingi.."hyperspeedAccelerator",
 
 			--Races
 			[58984] = raceP.."shadowmeld",
@@ -742,6 +746,9 @@ function SoundAlerter:GetSpellList ()
 			--
 		},
 		castSuccess = { --Used for abilities that affect the player
+
+			--Objects
+			[71607] = objP.base.."baubleOfTrueBlood",
 
 			--DK
 				--Blood

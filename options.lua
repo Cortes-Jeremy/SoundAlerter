@@ -2064,6 +2064,13 @@ function SoundAlerter:OnOptionsCreate()
 						name = "",
 						order = 0,
 						args = {
+							btnGen = {
+								type = 'execute',
+								name = "General Spells",
+								order = 9,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastSuccess", "general") end,
+							},
 							btnDK = {
 								type = 'execute',
 								name = "Death Knight",
@@ -2136,10 +2143,24 @@ function SoundAlerter:OnOptionsCreate()
 							},
 						},
 					},
+					general = {
+						type = 'group',
+						name = "General spells",
+						order = 1,
+						args = {
+							objects	= {
+								type = 'group',
+								inline = true,
+								name= "Objects",
+								order = 5,
+								args = listOption({71607},"castSuccess"),
+							},
+						}
+					},
 					dk	= {
 						type = 'group',
 						name = "|cffC41F3BDeath Knight|r",
-						order = 1,
+						order = 10,
 						args = {
 							dkBlood	= {
 								type = 'group',
@@ -2192,7 +2213,7 @@ function SoundAlerter:OnOptionsCreate()
 					druid = {
 						type = 'group',
 						name = "|cffFF7D0ADruid|r",
-						order = 2,
+						order = 11,
 						args = {
 							druidBalance= {
 								type = 'group',
@@ -2232,7 +2253,7 @@ function SoundAlerter:OnOptionsCreate()
 					hunter = {
 						type = 'group',
 						name = "|cffABD473Hunter|r",
-						order = 3,
+						order = 12,
 						args = {
 							beastmastery = {
 								type = 'group',
@@ -2300,7 +2321,7 @@ function SoundAlerter:OnOptionsCreate()
 					mage = {
 						type = 'group',
 						name = "|cff69CCF0Mage|r",
-						order = 4,
+						order = 13,
 						args = {
 							arcane = {
 								order = 1,
@@ -2362,7 +2383,7 @@ function SoundAlerter:OnOptionsCreate()
 					paladin = {
 						type = 'group',
 						name = "|cffF58CBAPaladin|r",
-						order = 5,
+						order = 14,
 						args = {
 							holy = {
 								order = 1,
@@ -2402,7 +2423,7 @@ function SoundAlerter:OnOptionsCreate()
 					priest	= {
 						type = 'group',
 						name = "|cffFFFFFFPriest|r",
-						order = 6,
+						order = 15,
 						args = {
 							discipline = {
 								order = 1,
@@ -2442,7 +2463,7 @@ function SoundAlerter:OnOptionsCreate()
 					rogue = {
 						type = 'group',
 						name = "|cffFFF569Rogue|r",
-						order = 7,
+						order = 16,
 						args = {
 							assassination = {
 								order = 1,
@@ -2482,7 +2503,7 @@ function SoundAlerter:OnOptionsCreate()
 					shaman	= {
 						type = 'group',
 						name = "|cff0070DEShaman|r",
-						order = 8,
+						order = 17,
 						args = {
 							elem = {
 								order = 1,
@@ -2522,7 +2543,7 @@ function SoundAlerter:OnOptionsCreate()
 					warlock = {
 						type = 'group',
 						name = "|cff9482C9Warlock|r",
-						order = 9,
+						order = 18,
 						args = {
 							affliction = {
 								order = 1,
@@ -2597,7 +2618,7 @@ function SoundAlerter:OnOptionsCreate()
 					warrior	= {
 						type = 'group',
 						name = "|cffC79C6EWarrior|r",
-						order = 10,
+						order = 19,
 						args = {
 							arms = {
 								order = 1,
