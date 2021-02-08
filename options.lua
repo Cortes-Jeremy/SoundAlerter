@@ -2443,7 +2443,7 @@ function SoundAlerter:OnOptionsCreate()
 								type = 'group',
 								inline = true,
 								name = SpellTexture(48782).."|cffFFFFFF Holy |r",
-								args = listOption({552, 528,48173,48078,48119,48068,48113},"castSuccess"),
+								args = listOption({552, 528,48173,48078,48068,48113},"castSuccess"),
 							},
 
 							spacerShadow = {

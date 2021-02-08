@@ -140,7 +140,7 @@ function SoundAlerter:GetSpellList ()
 				[34027] = hunterP.BM.."killCommand", --New
 				[54216] = hunterP.BM.."mastersCall", --New
 					--Proc
-					[34471] = hunterP.BM.."theBeastWithin",
+					[34471] = hunterP.BM.."_proc\\".."theBeastWithin",
 				--Marksmanship
 				[3045] = hunterP.MM.."rapidFire", -- NEW
 				--Survival
@@ -243,7 +243,7 @@ function SoundAlerter:GetSpellList ()
 				[31224] = rogP.SB.."cloakOfShadows",
 				[51713] = rogP.SB.."shadowDance",
 				[57934] = rogP.SB.."trickOfTheTrade", --New (A revoir)
-				[45182] = rogP.SB.."cheatDeath",   -- New
+				[45182] = rogP.SB.."_proc\\".."cheatingDeath",   -- New
 			--
 
 			--Shaman
@@ -469,7 +469,7 @@ function SoundAlerter:GetSpellList ()
 
 			--Rogue
 				--Assassination
-				[14177] = rogP.AS.."coldBlood",
+				[14177] = rogP.AS.."coldBloodDown",
 				--Combat
 				[13750] = rogP.CT.."adrenalineRushDown",	--New
 				[5277] = rogP.CT.."evasionDown", --Evasion rank 1
@@ -728,7 +728,7 @@ function SoundAlerter:GetSpellList ()
 				[688] = wlP.DM.."summonImp", --New
 				[712] = wlP.DM.."summonSuccube", --New
 				[697] = wlP.DM.."summonVoidwalker", --New
-				[30146] = wlP.DM.."summonpet2", --felguard, works
+				[30146] = wlP.DM.."summonFelGuard", --felguard, works
 				--Destruction
 				[59172] = wlP.DT.."chaosBolt", --New
 				[47811] = wlP.DT.."immolate", --New
@@ -972,7 +972,6 @@ function SoundAlerter:GetSpellList ()
 				[528] = priestP.HY.."cureDisease", -- NEW
 				[48173] = priestP.HY.."desperatePrayer", --works
 				[48078] = priestP.HY.."holyNova", -- NEW
-				[48119] = priestP.HY.."bindingHeal", -- NEW
 				[48068] = priestP.HY.."renew", -- NEW
 				[48113] = priestP.HY.."prayerOfMending", -- NEW
 				--Shadow
