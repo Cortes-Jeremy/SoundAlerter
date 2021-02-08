@@ -4,7 +4,7 @@
 								add death wish down, starfire, bladestorm down]]
 local objP = {
 	base = "_objects\\",
-	ingi = "_objects\\ingineering\\"
+	ingi = "_objects\\ingineering\\",
 	FA = "_objects\\firstAid\\"
 }
 local raceP = "_racial\\"

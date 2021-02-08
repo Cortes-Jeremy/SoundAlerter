@@ -2066,7 +2066,7 @@ function SoundAlerter:OnOptionsCreate()
 						args = {
 							btnGen = {
 								type = 'execute',
-								name = "General Spells",
+								name = "General",
 								order = 9,
 								width = "full",
 								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellCastSuccess", "general") end,
