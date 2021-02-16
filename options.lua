@@ -2153,7 +2153,7 @@ function SoundAlerter:OnOptionsCreate()
 								inline = true,
 								name= "Objects",
 								order = 5,
-								args = listOption({71607},"castSuccess"),
+								args = listOption({71607,54757},"castSuccess"),
 							},
 						}
 					},

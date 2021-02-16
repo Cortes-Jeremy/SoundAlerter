@@ -749,6 +749,7 @@ function SoundAlerter:GetSpellList ()
 
 			--Objects
 			[71607] = objP.base.."baubleOfTrueBlood",
+			[54757] = objP.ingi.."pyroRocket",
 
 			--DK
 				--Blood
