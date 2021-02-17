@@ -1,0 +1,4 @@
+ 47468 - pet Claw
+ 47481 - pet Gnaw / stun
+ 47482 - pet Leap
+ 47484 - pet huddle

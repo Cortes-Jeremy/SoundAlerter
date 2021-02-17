@@ -1,0 +1,22 @@
+552   - abolish disease
+48120 - binding heal (r3)
+528   - cure disease
+48173 - desperate prayer (9)
+64843 - divine hymn (r1) (BOF)
+48071 - flash Heal
+48063 - greater Heal (big_Heal)
+48135 - holy fire (r11)
+48078 - holy nova (r9)
+64901 - hymn of hope (NULL)
+48119 - prayer Of Mending (r3)
+48068 - Renew (r14)
+48171 - resurrection (r7)
+48123 - smite (r12)
+47788 - Guardian spirit
+
+
+
+
+
+
+

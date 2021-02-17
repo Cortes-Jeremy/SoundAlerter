@@ -1,0 +1,20 @@
+47436 - battle Shout
+18499 - berserker rage
+2458  - berserker stance
+23881 - bloodthirst
+1161  - challenging shout
+47520 - cleave
+47440 - commanding shout
+12292 - Death Wish
+47437 - demoralizing shout
+55694 - enraged regeneration
+47471 - execute
+60970 - heroic fury
+20252 - intercept
+5246  - intimidating shout
+12323 - piercing howl
+6552  - pummel
+1719  - recklessness
+47475 - slam
+34428 - victory rush
+1680  - whirlwind

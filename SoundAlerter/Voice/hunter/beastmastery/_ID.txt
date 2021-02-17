@@ -1,0 +1,13 @@
+13161 - aspectOfThe Beast
+5118  - aspectOfThe Cheetah
+61847 - aspectOfThe Dragonhawk (r2)
+27044 - aspectOfThe Hawk (r8)
+13163 - aspectOfThe Monkey
+13159 - aspectOfThe Pack
+34074 - aspectOfThe Viper
+49071 - aspectOfThe Wild (r4)
+6991  - feed Pet
+34026 - kill Command (aura 34027)
+53271 - master's Call (aura 54216)
+48990 - mend Pet
+14327 - scare Beast

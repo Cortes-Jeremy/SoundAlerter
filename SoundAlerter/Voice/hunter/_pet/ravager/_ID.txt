@@ -1,0 +1,5 @@
+53561 - pet ravage (stun, r5)
+1742  - pet cower
+53490 - pet bullheaded (trinket)
+52473 - pet bite (r10)
+61684 - pet Dash

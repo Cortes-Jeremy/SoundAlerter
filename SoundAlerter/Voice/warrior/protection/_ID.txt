@@ -1,0 +1,16 @@
+2687  - bloodrage
+12809 - concussion blow
+71    - Defensive stance
+47498 - devastate
+676   - disarm
+3411  - intervene
+12975 - last stand
+57823 - revenge
+72    - shield bash
+2565  - shield block
+47488 - shield slam
+871   - shield wall
+46968 - shockwave
+23920 - spell reflection
+7386  - sunder armor
+355   - taunt

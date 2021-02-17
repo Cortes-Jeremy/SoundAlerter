@@ -1,0 +1,17 @@
+22812 - Barkskin
+33786 - cyclone
+53308 - entangling roots (r8)
+770   - faery fire
+33831 - force of nature
+18658 - hibernate (r3)
+48467 - hurricane (r5)
+29166 - Innervate
+48468 - insect swarm (r7)
+48463 - moonfire (r14)
+24858 - moonkin Form
+53312 - nature's grasp
+53201 - starfall (r4)
+48465 - starfire (r10)
+53307 - thorns (r8)
+61384 - typhoon (r5)
+48461 - wrath (r12)

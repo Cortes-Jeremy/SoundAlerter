@@ -1,0 +1,2 @@
+18425 - improved kick (silence)
+1330  - garrote - silence

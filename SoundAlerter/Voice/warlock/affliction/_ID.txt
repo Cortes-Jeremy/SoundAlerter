@@ -1,0 +1,35 @@
+47813 - corruption (r10)
+47864 - curse of agony (r9)
+47867 - curse of doom (r3)
+18223 - curse of exhaustion
+47865 - curse of the elements
+11719 - curse of tongues (r2)
+50511 - curse of weakness (r9)
+47860 - death coil (r6)
+47857 - drain life (r9)
+5138  - drain mana
+47855 - drain soul (r6)
+6215  - fear (r3)
+59164 - haunt (r4)
+17928 - howl of terror (r2)
+57946 - life tap (r8)
+47836 - seed of corruption (r3)
+47843 - unstable affliction (r5)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
