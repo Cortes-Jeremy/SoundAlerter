@@ -71,18 +71,19 @@ local warP = {
 --
 local otherP = {
 	bigH = "__oldSounds\\",
-	res = "__oldSounds\\",
+	res  = "__oldSounds\\",
 }
 --
-enemyP = {
+local enemyP = {
 	dbf  = "_enemy\\debuff\\",
 	dbfD = "_enemy\\debuffDown\\",
 }
-friendP = {
-	dbfCst  = "_friend\\debuff\\",
-	dbfScs = "_friend\\debuffDown\\",
-	intr = "_friend\\interrupt\\"
+local friendP = {
+	dbfCst = "_friend\\debuffCastStart\\",
+	dbfScs = "_friend\\debuffCastSuccess\\",
+	intr   = "_friend\\interrupt\\",
 }
+local selfP = "_player\\"
 
 function SoundAlerter:GetSpellList ()
 	return {
