@@ -29,6 +29,7 @@ local SA_LANGUAGE = {
 self.SA_LANGUAGE = SA_LANGUAGE
 local SA_CHATGROUP = {
 	["SAY"] = L["Say"],
+	["EMOTE"] = L["Emote"],
 	["PARTY"] = L["Party"],
 	["RAID"] = L["Raid"],
 	["BATTLEGROUND"] = L["Battleground"],
