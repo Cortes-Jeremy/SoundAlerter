@@ -1,5 +1,5 @@
 ﻿## Interface: 30300
-## Title: |cffe5e3e3SoundAlerter|r |cffe5e3e3ff1784d1Enhanced|r
+## Title: |cffe5e3e3SoundAlerter|r |cff1784d1Enhanced|r
 ## Notes: Sound Alerter for player used spells
 ## Author: Trolololol, Abatorlos of Spinebreaker, Duskashes, Superk, Enhanced by Cortes
 ## SavedVariables: SoundAlerterDB

@@ -363,7 +363,7 @@ function SoundAlerter:COMBAT_LOG_EVENT_UNFILTERED(event , ...)
 						((spellID == 6770 or spellID == 11297 or spellID == 51724) and sadb.sapenemy) or
 						((spellID == 12826 or spellID == 118 or spellID == 28271 or spellID == 28272) and sadb.polyenemy) or
 						((spellID == 6215 or spellID == 5484 or spellID == 17928) and sadb.fearenemy)) then
-							SendChatMessage(GetSpellLink(spellID).." down on "..destName)
+							SendChatMessage(GetSpellLink(spellID).." down on "..destName, sadb.chatgroup, nil, nil)
 					end
 			end
 	elseif (event == "SPELL_CAST_SUCCESS") then
