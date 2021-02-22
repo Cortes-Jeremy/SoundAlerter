@@ -58,6 +58,7 @@ L["Who was afflicted by the spell? Leave it on 'any' if it's a spell cast or a b
 L["Rename the New Alert entry"] = true
 L["English (Female)"] = true
 L["Say"] = true
+L["Emote"] = true
 L["PVP Voice Alert"] = true
 L["Load Configuration"] = true
 L["Load Configuration Options"] = true

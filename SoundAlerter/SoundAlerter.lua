@@ -29,6 +29,7 @@ local SA_LANGUAGE = {
 self.SA_LANGUAGE = SA_LANGUAGE
 local SA_CHATGROUP = {
 	["SAY"] = L["Say"],
+	["EMOTE"] = L["Emote"],
 	["PARTY"] = L["Party"],
 	["RAID"] = L["Raid"],
 	["BATTLEGROUND"] = L["Battleground"],
@@ -140,7 +141,7 @@ function SoundAlerter:Interrupted()
 	if (sadb.combatText and IsAddOnLoaded("Blizzard_CombatText")) then
 		CombatText_AddMessage("Interrupted",CombatText_StandardScroll, 0,1,1,nil,false)
 	else
-		PlaySoundFile(sadb.sapath.."Interrupted.mp3");
+		PlaySoundFile(sadb.sapath.."".."Interrupted.mp3"); --TODO
 	end
 end
 
@@ -362,7 +363,7 @@ function SoundAlerter:COMBAT_LOG_EVENT_UNFILTERED(event , ...)
 						((spellID == 6770 or spellID == 11297 or spellID == 51724) and sadb.sapenemy) or
 						((spellID == 12826 or spellID == 118 or spellID == 28271 or spellID == 28272) and sadb.polyenemy) or
 						((spellID == 6215 or spellID == 5484 or spellID == 17928) and sadb.fearenemy)) then
-							SendChatMessage(GetSpellLink(spellID).." down on "..destName)
+							SendChatMessage(GetSpellLink(spellID).." down on "..destName, sadb.chatgroup, nil, nil)
 					end
 			end
 	elseif (event == "SPELL_CAST_SUCCESS") then
@@ -398,7 +399,7 @@ function SoundAlerter:COMBAT_LOG_EVENT_UNFILTERED(event , ...)
 			if (sadb.combatText and IsAddOnLoaded("Blizzard_CombatText")) then
 				CombatText_AddMessage("Counter",CombatText_StandardScroll, 0,1,1,nil,false)
 			else
-				PlaySoundFile(sadb.sapath.."lockout.mp3");
+				PlaySoundFile(sadb.sapath.."lockout.mp3"); -- TODO
 			end
 			if (not sadb.chatalerts) then
 				if (sadb.interruptenemy and sourcetype[COMBATLOG_FILTER_ME]) then
