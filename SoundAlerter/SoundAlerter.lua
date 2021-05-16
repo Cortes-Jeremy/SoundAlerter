@@ -53,7 +53,7 @@ local SA_UNIT = {
 	focus = L["Focus"],
 	mouseover = L["Mouseover"],
 	party = L["Party"],
---	raid = L["Raid"],
+	raid = L["Raid"],
 	arena = L["Arena (enemy)"],
 --	boss = L["Boss"],
 	custom = L["Custom"],
@@ -219,6 +219,15 @@ function SoundAlerter:COMBAT_LOG_EVENT_UNFILTERED(event , ...)
 						end
 					end
 				end
+			elseif k == "raid" then
+				if UnitName("raid1") ~= nil then --because UnitInParty always returns true?
+					for i = 1, MAX_RAID_MEMBERS do
+						if destGUID == UnitGUID(k..i) then
+						destuid[k] = (UnitGUID(k..i) == destGUID)
+						break
+						end
+					end
+				end
 			elseif k == "arena" then
 				if currentZoneType == "arena" then
 					for i = 1 , 5 do
@@ -258,6 +267,15 @@ function SoundAlerter:COMBAT_LOG_EVENT_UNFILTERED(event , ...)
 					for i = 1, MAX_PARTY_MEMBERS do
 						if sourceGUID == UnitGUID(k..i) then
 						sourceuid[k] = (UnitGUID(k..i) == sourceGUID)
+						break
+						end
+					end
+				end
+			elseif k == "raid" then
+				if UnitName("raid1") ~= nil then --because UnitInParty always returns true?
+					for i = 1, MAX_RAID_MEMBERS do
+						if destGUID == UnitGUID(k..i) then
+						destuid[k] = (UnitGUID(k..i) == destGUID)
 						break
 						end
 					end

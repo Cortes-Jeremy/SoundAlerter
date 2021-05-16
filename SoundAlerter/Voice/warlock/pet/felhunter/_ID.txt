@@ -1,2 +1,0 @@
-19647 - spell lock (aura 24259)
-48011 - devour magic
