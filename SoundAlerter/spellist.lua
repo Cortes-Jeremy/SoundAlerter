@@ -17,7 +17,7 @@ function SoundAlerter:GetSpellList ()
 			[20594] = "stoneform",
 			[20572] = "bloodFury",
 			[33702] = "bloodFury",
-			[7744] = "willOfTheForsaken",
+			[7744]  = "willOfTheForsaken",
 			[28880] = "giftOfTheNaaru",
 
 			--DK
@@ -55,10 +55,10 @@ function SoundAlerter:GetSpellList ()
 					[16870] = "clearcasting",
 				--Feral
 				[50334] = "berserk",
-				[1850] = "dash",	--rank 1
-				[9821] = "dash",	--rank 2
+				[1850]  = "dash",	--rank 1
+				[9821]  = "dash",	--rank 2
 				[33357] = "dash",	--rank 3
-				[5229] = "enrage", --New
+				[5229]  = "enrage", --New
 				[22842] = "frenziedRegeneration",
 				[52610] = "savageRoar", --New
 				[61336] = "survivalInstincts",
@@ -77,14 +77,14 @@ function SoundAlerter:GetSpellList ()
 					--Proc
 					[34471] = "theBeastWithin",
 				--Marksmanship
-				[3045] = "rapidFire", -- NEW
+				[3045]  = "rapidFire", -- NEW
 				--Survival
 				[19263] = "deterrence",
 				[35079] = "misdirection", --New
 				--Pet
 					[53480] = "roarOfSacrifice",
 					[53517] = "roarOfRecovery", --New
-					[1742] = "petCower", --New
+					[1742]  = "petCower", --New
 					--Crab
 					[53476] = "petIntervene", --New
 					[53479] = "petLaststand", --New
@@ -95,10 +95,10 @@ function SoundAlerter:GetSpellList ()
 			--Mage
 				--Arcane
 				[12042] = "arcanePower",
-				[66] = "invisibility", --New
+				[66]    = "invisibility", --New
 				[43020] = "manaShield", --New
 				[12043] = "presenceOfMind",
-				[130] = "slowFall", --New
+				[130]   = "slowFall", --New
 					--Proc
 					[44401] = "missileBarrage", --New
 				--Fire
@@ -128,15 +128,15 @@ function SoundAlerter:GetSpellList ()
 					--Proc
 					[54149] = "infusionOfLight", --New
 				--Protection
-				[498] = "divineProtection",
+				[498]   = "divineProtection",
 				[64205] = "divineSacrifice",
-				[642] = "divineShield",
-				[1044] = "handOfFreedom",
-				[1022] = "handOfProtection",	--Hand of Protection rank 1
-				[5599] = "handOfProtection",	--Hand of Protection rank 2
+				[642]   = "divineShield",
+				[1044]  = "handOfFreedom",
+				[1022]  = "handOfProtection",	--Hand of Protection rank 1
+				[5599]  = "handOfProtection",	--Hand of Protection rank 2
 				[10278] = "handOfProtection",	--Hand of Protection rank 3
-				[6940] = "handofsacrifice",
-				[1038] = "handofsalvation", --New
+				[6940]  = "handofsacrifice",
+				[1038]  = "handofsalvation", --New
 				[25780] = "righteousFury", --New
 					--Proc
 					[20178] = "reckoning", --New
@@ -149,7 +149,7 @@ function SoundAlerter:GetSpellList ()
 
 			--Priest
 				--Discipline
-				[6346] = "fearWard",
+				[6346]  = "fearWard",
 				[48168] = "innerFire", --New
 				[33206] = "painSuppression",
 				[10060] = "powerInfusion",
@@ -158,7 +158,7 @@ function SoundAlerter:GetSpellList ()
 				[47788] = "guardianSpirit",
 				--Shadow
 				[47585] = "dispersion",
-				[586] = "fade",	--New
+				[586]   = "fade",	--New
 				[15473] = "shadowForm",	--New
 			--
 
@@ -167,12 +167,12 @@ function SoundAlerter:GetSpellList ()
 				[14177] = "coldBlood",
 				--Combat
 				[13750] = "adrenalineRush",	--New
-				[5277] = "evasion", --Evasion rank 1
+				[5277]  = "evasion", --Evasion rank 1
 				[26669] = "evasion", --Evasion rank 2
 				[48659] = "feint",		  -- NEW
 				[51690] = "killingSpree", -- NEW
-				[2983] = "sprint",	--Sprint rank 1
-				[8696] = "sprint",	--Sprint rank 3
+				[2983]  = "sprint",	--Sprint rank 1
+				[8696]  = "sprint",	--Sprint rank 3
 				[11305] = "sprint",	--Sprint rank 2
 				--Subtlety
 				[31224] = "cloakOfShadows",
@@ -185,14 +185,14 @@ function SoundAlerter:GetSpellList ()
 				--Elemental
 				[16166] = "elementalMastery",
 				--Enhancement
-				[2645] = "ghostWolf", --new
+				[2645]  = "ghostWolf", --new
 				[32182] = "heroism", --new
-				[2825] = "bloodlust",
+				[2825]  = "bloodlust",
 				[30823] = "shamanisticRage",
 					--Proc
 					[53817] = "maelstromWeapon",
 				--Restoration
-				[974] = "earthShield",	--Earth Shield rank 1
+				[974]   = "earthShield",	--Earth Shield rank 1
 				[32593] = "earthShield",	--Earth Shield rank 2
 				[32594] = "earthShield",	--Earth Shield rank 3
 				[49283] = "earthShield",	--Earth Shield rank 4
@@ -232,13 +232,13 @@ function SoundAlerter:GetSpellList ()
 				[18499] = "berserkerRage", --New (manque le son du down)
 				[12292] = "deathWish", --New (manque le son du down)
 				[55694] = "enragedRegeneration",
-				[1719] = "recklessness",
+				[1719]  = "recklessness",
 				[47436] = "battleShout",	 -- NEW
 				[47440] = "commandingShout", -- NEW
 				--Protection
 				[12975] = "lastStand",
-				[2565] = "shieldBlock", --New
-				[871] = "shieldWall",
+				[2565]  = "shieldBlock", --New
+				[871]   = "shieldWall",
 				[23920] = "spellReflection",
 					--Proc
 					[50227] = "swordAndBoard", --New
@@ -258,7 +258,6 @@ function SoundAlerter:GetSpellList ()
 			[33702] = "bloodFuryDown",
 			[7744] = "willOfTheForsakenDown",
 			[28880] = "giftOfTheNaaruDown",
-
 
 			--DK
 				--Blood

@@ -395,7 +395,7 @@ function SoundAlerter:COMBAT_LOG_EVENT_UNFILTERED(event , ...)
 				if ((currentZoneType == "arena" or pvpType == "arena") or (sourceuid.target or sourceuid.focus)) then
 					if (self:ArenaClass(sourceGUID) and sadb.class) then
 						local c = self:ArenaClass(sourceGUID) -- missing, get Class that have trinketed
-						PlaySoundFile(sadb.sapath.."_trinkets\\"..c..".mp3"); -- custom new Sound for trinket (non destructive, so added new path)
+						PlaySoundFile(sadb.sapath..c..".mp3"); -- custom new Sound for trinket (non destructive, so added new path)
 						--PlaySoundFile(sadb.sapath..c..".mp3");
 						--self:ScheduleTimer("PlayTrinket", 0.4); -- new class sound already have it
 					else
