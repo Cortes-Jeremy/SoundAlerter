@@ -452,8 +452,8 @@ function SoundAlerter:OnOptionsCreate()
 			--
 			spellauraApplied = {
 				type = 'group',
-				name = "Enemy Buffs",
-				desc = "Alerts you when your enemy gains a buff, or uses a cooldown",
+				name = "Enemy Aura",
+				desc = "Alerts you when your enemy gains an aura, or uses a cooldown",
 				set = setOption,
 				get = getOption,
 				disabled = function() return sadb.auraApplied end,
@@ -465,6 +465,20 @@ function SoundAlerter:OnOptionsCreate()
 						name = "",
 						order = 0,
 						args = {
+							btnGen = {
+								type = 'execute',
+								name = "General spells",
+								order = 8,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellauraApplied", "general") end,
+							},
+							btnRaces = {
+								type = 'execute',
+								name = "General races",
+								order = 9,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellauraApplied", "races") end,
+							},
 							btnDK = {
 								type = 'execute',
 								name = "Death Knight",
@@ -547,7 +561,7 @@ function SoundAlerter:OnOptionsCreate()
 								type = 'toggle',
 								name = "Alert Class calling for trinketting in Arena",
 								desc = "Alert when an enemy class trinkets in arena",
-								confirm = function() PlaySoundFile(sadb.sapath.."_trinkets\\".."paladin.mp3"); end,
+								confirm = function() PlaySoundFile(sadb.sapath.."paladin.mp3"); end,
 								order = 1,
 							},
 							drinking = {
@@ -576,7 +590,7 @@ function SoundAlerter:OnOptionsCreate()
 					},
 					races = {
 						type = 'group',
-						name = "|cffFFFFFFGeneral Races|r",
+						name = "|cffFFFFFFGeneral races|r",
 						order = 4,
 						args = listOption({58984,26297,20594,33702,7744,28880},"auraApplied"),
 					},
@@ -1023,8 +1037,8 @@ function SoundAlerter:OnOptionsCreate()
 			},
 			spellAuraRemoved = {
 				type = 'group',
-				name = "Enemy Buff Down",
-				desc = "Alerts you when enemy buffs or used cooldowns are off the enemy",
+				name = "Enemy Aura Down",
+				desc = "Alerts you when enemy aura or used cooldowns are off the enemy",
 				set = setOption,
 				get = getOption,
 				disabled = function() return sadb.auraRemoved end,
@@ -1036,6 +1050,20 @@ function SoundAlerter:OnOptionsCreate()
 						name = "",
 						order = 0,
 						args = {
+							btnGen = {
+								type = 'execute',
+								name = "General spells",
+								order = 8,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellAuraRemoved", "general") end,
+							},
+							btnRaces = {
+								type = 'execute',
+								name = "General races",
+								order = 9,
+								width = "full",
+								func = function() AceConfigDialog:SelectGroup("SoundAlerter", "Spells", "spellAuraRemoved", "races") end,
+							},
 							btnDK = {
 								type = 'execute',
 								name = "Death Knight",

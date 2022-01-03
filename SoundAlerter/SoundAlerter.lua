@@ -53,7 +53,7 @@ local SA_UNIT = {
 	focus = L["Focus"],
 	mouseover = L["Mouseover"],
 	party = L["Party"],
---	raid = L["Raid"],
+	raid = L["Raid"],
 	arena = L["Arena (enemy)"],
 --	boss = L["Boss"],
 	custom = L["Custom"],
@@ -141,7 +141,7 @@ function SoundAlerter:Interrupted()
 	if (sadb.combatText and IsAddOnLoaded("Blizzard_CombatText")) then
 		CombatText_AddMessage("Interrupted",CombatText_StandardScroll, 0,1,1,nil,false)
 	else
-		PlaySoundFile(sadb.sapath.."".."Interrupted.mp3"); --TODO
+		PlaySoundFile(sadb.sapath.."Interrupted.mp3");
 	end
 end
 
@@ -219,6 +219,15 @@ function SoundAlerter:COMBAT_LOG_EVENT_UNFILTERED(event , ...)
 						end
 					end
 				end
+			elseif k == "raid" then
+				if UnitName("raid1") ~= nil then --because UnitInParty always returns true?
+					for i = 1, MAX_RAID_MEMBERS do
+						if destGUID == UnitGUID(k..i) then
+						destuid[k] = (UnitGUID(k..i) == destGUID)
+						break
+						end
+					end
+				end
 			elseif k == "arena" then
 				if currentZoneType == "arena" then
 					for i = 1 , 5 do
@@ -258,6 +267,15 @@ function SoundAlerter:COMBAT_LOG_EVENT_UNFILTERED(event , ...)
 					for i = 1, MAX_PARTY_MEMBERS do
 						if sourceGUID == UnitGUID(k..i) then
 						sourceuid[k] = (UnitGUID(k..i) == sourceGUID)
+						break
+						end
+					end
+				end
+			elseif k == "raid" then
+				if UnitName("raid1") ~= nil then --because UnitInParty always returns true?
+					for i = 1, MAX_RAID_MEMBERS do
+						if destGUID == UnitGUID(k..i) then
+						destuid[k] = (UnitGUID(k..i) == destGUID)
 						break
 						end
 					end
@@ -377,7 +395,7 @@ function SoundAlerter:COMBAT_LOG_EVENT_UNFILTERED(event , ...)
 				if ((currentZoneType == "arena" or pvpType == "arena") or (sourceuid.target or sourceuid.focus)) then
 					if (self:ArenaClass(sourceGUID) and sadb.class) then
 						local c = self:ArenaClass(sourceGUID) -- missing, get Class that have trinketed
-						PlaySoundFile(sadb.sapath.."_trinkets\\"..c..".mp3"); -- custom new Sound for trinket (non destructive, so added new path)
+						PlaySoundFile(sadb.sapath..c..".mp3"); -- custom new Sound for trinket (non destructive, so added new path)
 						--PlaySoundFile(sadb.sapath..c..".mp3");
 						--self:ScheduleTimer("PlayTrinket", 0.4); -- new class sound already have it
 					else
@@ -399,7 +417,7 @@ function SoundAlerter:COMBAT_LOG_EVENT_UNFILTERED(event , ...)
 			if (sadb.combatText and IsAddOnLoaded("Blizzard_CombatText")) then
 				CombatText_AddMessage("Counter",CombatText_StandardScroll, 0,1,1,nil,false)
 			else
-				PlaySoundFile(sadb.sapath.."lockout.mp3"); -- TODO
+				PlaySoundFile(sadb.sapath.."lockout.mp3");
 			end
 			if (not sadb.chatalerts) then
 				if (sadb.interruptenemy and sourcetype[COMBATLOG_FILTER_ME]) then

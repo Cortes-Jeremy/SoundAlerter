@@ -1,6 +1,0 @@
-53478 - pet laststand (53479 laststand aura on pet)
-53476 - pet intervene (53476 intervene aura on player)
-61685 - pet charge
-52472 - pet claw
-1742  - pet cower
-53547 - pet pin (53548 debuff aura)
